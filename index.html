@@ -3,130 +3,578 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>کلینیک روان‌شناسی سپهر آرامش | سامانه نوبت‌دهی آنلاین</title>
+  <title>رزرو آنلاین نوبت مشاوره | کلینیک سپهر آرامش</title>
   <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
   <style>
     :root {
-      --bg: #0b0f19;
-      --card: #161f30;
-      --border: #24324a;
+      --bg-main: #0b0f19;
+      --card-bg: #161f30;
+      --card-border: #24324a;
       --primary: #38bdf8;
-      --text: #f8fafc;
+      --primary-hover: #0284c7;
+      --success: #22c55e;
+      --danger: #ef4444;
+      --text-main: #f8fafc;
       --text-muted: #94a3b8;
+      --input-bg: #0f172a;
     }
+
     * { box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; }
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      margin: 0;
-      min-height: 100vh;
+    body { background-color: var(--bg-main); color: var(--text-main); margin: 0; padding: 20px 12px; line-height: 1.6; }
+    .container { max-width: 860px; margin: 0 auto; }
+
+    .header-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 24px;
       display: flex;
-      justify-content: center;
       align-items: center;
-      padding: 20px;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     }
-    .landing-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 40px 30px;
-      max-width: 520px;
-      width: 100%;
-      text-align: center;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.5);
-    }
-    .logo {
-      width: 80px;
-      height: 80px;
-      object-fit: contain;
+    .clinic-info { display: flex; align-items: center; gap: 14px; }
+    .clinic-logo { width: 55px; height: 55px; object-fit: contain; }
+    .clinic-title { margin: 0; font-size: 1.3rem; color: #fff; }
+    .clinic-sub { margin: 0; font-size: 0.85rem; color: var(--primary); }
+
+    .tabs-nav {
+      display: flex;
+      gap: 10px;
       margin-bottom: 20px;
     }
-    h1 {
-      margin: 0 0 10px 0;
-      font-size: 1.45rem;
-      color: #fff;
-    }
-    p.subtitle {
-      margin: 0 0 22px 0;
-      font-size: 0.95rem;
-      color: var(--primary);
-      font-weight: 500;
-    }
-    .badge {
-      display: inline-block;
-      background: rgba(56, 189, 248, 0.1);
-      border: 1px solid var(--primary);
-      color: var(--primary);
-      padding: 6px 16px;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      margin-bottom: 22px;
-    }
-    .info-box {
-      background: rgba(11, 15, 25, 0.6);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 18px;
-      margin-bottom: 24px;
-      text-align: right;
-      font-size: 0.9rem;
-      line-height: 2;
+    .tab-btn {
+      flex: 1;
+      padding: 12px;
+      background: rgba(22, 31, 48, 0.6);
+      border: 1px solid var(--card-border);
       color: var(--text-muted);
-    }
-    .info-box strong {
-      color: #fff;
-    }
-    .phone-link {
-      color: var(--primary);
-      text-decoration: none;
+      border-radius: 12px;
+      font-size: 0.95rem;
       font-weight: bold;
-      direction: ltr;
-      display: inline-block;
+      cursor: pointer;
+      transition: 0.2s;
     }
-    .btn {
-      display: block;
+    .tab-btn.active {
+      background: var(--card-bg);
+      color: var(--primary);
+      border-color: var(--primary);
+      box-shadow: 0 4px 15px rgba(56, 189, 248, 0.15);
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+    }
+    .step-title {
+      margin-top: 0;
+      margin-bottom: 18px;
+      font-size: 1.1rem;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .form-group { display: flex; flex-direction: column; margin-bottom: 16px; }
+    .form-group label { font-size: 0.85rem; margin-bottom: 6px; color: var(--text-muted); }
+    .form-group input, .form-group select {
+      padding: 12px 14px;
+      background: var(--input-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      color: #fff;
+      outline: none;
+      transition: 0.2s;
+    }
+    .form-group input:focus, .form-group select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+    }
+
+    .days-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(105px, 1fr));
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .day-pill {
+      background: var(--input-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .day-pill:hover { border-color: var(--primary); }
+    .day-pill.selected {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    .day-pill.blocked {
+      background: rgba(239, 68, 68, 0.08);
+      border-color: rgba(239, 68, 68, 0.3);
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    .slots-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .slot-item {
+      padding: 12px 8px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid var(--card-border);
+      background: var(--input-bg);
+      transition: 0.2s;
+    }
+    .slot-item.available:hover {
+      border-color: var(--primary);
+      background: rgba(56, 189, 248, 0.15);
+    }
+    .slot-item.selected {
+      background: linear-gradient(135deg, #0284c7, #0ea5e9);
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 4px 12px rgba(14, 165, 233, 0.35);
+    }
+    .slot-item.occupied {
+      background: rgba(15, 23, 42, 0.4);
+      color: #475569;
+      border-color: rgba(255,255,255,0.05);
+      cursor: not-allowed;
+      text-decoration: line-through;
+    }
+
+    .btn-submit {
       width: 100%;
       padding: 14px;
       background: linear-gradient(135deg, #0284c7, #0ea5e9);
       color: white;
-      text-decoration: none;
+      border: none;
       border-radius: 12px;
-      font-weight: bold;
       font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
       transition: 0.2s;
     }
-    .btn:hover {
-      opacity: 0.9;
+    .btn-submit:hover { opacity: 0.9; }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .summary-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px dashed var(--card-border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+      line-height: 1.9;
     }
-    .footer {
-      margin-top: 25px;
-      font-size: 0.8rem;
-      color: var(--text-muted);
+
+    .booking-list-item {
+      background: var(--input-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+    .badge-reserved { background: rgba(56, 189, 248, 0.2); color: var(--primary); border: 1px solid var(--primary); }
+    .badge-completed { background: rgba(34, 197, 94, 0.2); color: var(--success); border: 1px solid var(--success); }
+
+    #loading_status {
+      text-align: center;
+      padding: 10px;
+      color: var(--primary);
+      font-size: 0.9rem;
+      display: none;
     }
   </style>
 </head>
 <body>
 
-  <div class="landing-card">
-    <img src="https://cdn.imgurl.ir/uploads/l39464_et_1s.png" alt="لوگو کلینیک سپهر آرامش" class="logo">
-    <h1>مرکز روان‌شناسی و مشاوره سپهر آرامش</h1>
-    <p class="subtitle">سامانه پذیرش و رزرواسیون آنلاین نوبت</p>
-    
-    <div class="badge">🌐 در حال آماده‌سازی و ارتقای پرتال مراجعین</div>
+<div class="container">
+  
+  <div class="header-card">
+    <div class="clinic-info">
+      <img src="https://cdn.imgurl.ir/uploads/l39464_et_1s.png" class="clinic-logo" alt="لوگو">
+      <div>
+        <h1 class="clinic-title">کلینیک روان‌شناسی سپهر آرامش</h1>
+        <p class="clinic-sub">پرتال نوبت‌دهی آنلاین مراجعین</p>
+      </div>
+    </div>
+    <div id="today_date" style="font-size: 0.85rem; color: var(--text-muted);">امروز: --</div>
+  </div>
 
-    <div class="info-box">
-      <div>📍 <strong>آدرس کلینیک:</strong> نبش احمدآباد ۷ - مجتمع گوهرشاد - طبقه سوم - واحد ۳۰۹</div>
-      <div>📞 <strong>تلفن هماهنگی و پشتیبانی:</strong> <a href="tel:09150703239" class="phone-link">۰۹۱۵۰۷۰۳۲۳۹</a></div>
-      <div>🕒 <strong>ساعت کاری:</strong> همه‌روزه از ساعت ۹:۰۰ صبح الی ۲۱:۰۰ شب</div>
-      <div>🧠 <strong>خدمات:</strong> مشاوره‌های فردی، زوج‌درمانی، خانواده و کودک</div>
+  <div class="tabs-nav">
+    <button class="tab-btn active" onclick="switchClientTab('booking')">📅 رزرو نوبت جدید</button>
+    <button class="tab-btn" onclick="switchClientTab('my_bookings')">🔍 پیگیری نوبت‌های من</button>
+  </div>
+
+  <div id="loading_status">در حال دریافت ساعات خالی از سرور کلینیک...</div>
+
+  <!-- تب رزرو نوبت -->
+  <div id="tab_booking">
+    
+    <!-- مرحله ۱: انتخاب مشاور -->
+    <div class="card">
+      <h3 class="step-title">۱. انتخاب مشاور</h3>
+      <div class="form-group">
+        <label>مشاور مورد نظر خود را انتخاب کنید:</label>
+        <select id="counselor_select" onchange="onCounselorChange()">
+          <option value="" disabled selected>در حال بارگذاری مشاوران...</option>
+        </select>
+      </div>
     </div>
 
-    <a href="#" class="btn" onclick="alert('پرتال مراجعین تا ساعاتی دیگر فعال خواهد شد.'); return false;">ورود به سامانه رزرو مراجعین</a>
+    <!-- مرحله ۲: انتخاب روز و ساعت -->
+    <div class="card" id="schedule_card" style="display: none;">
+      <h3 class="step-title">۲. انتخاب زمان مراجعه</h3>
+      
+      <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 8px;">روز مراجعه را انتخاب کنید:</label>
+      <div class="days-grid" id="days_container"></div>
 
-    <div class="footer">
-      تمامی حقوق این سامانه متعلق به کلینیک روان‌شناسی سپهر آرامش است.
+      <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 8px;">ساعت پارت خالی را انتخاب کنید:</label>
+      <div class="slots-grid" id="slots_container">
+        <div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 15px;">ابتدا یک روز را انتخاب نمایید.</div>
+      </div>
+    </div>
+
+    <!-- مرحله ۳: اطلاعات هویتی و ثبت نهایی -->
+    <div class="card" id="form_card" style="display: none;">
+      <h3 class="step-title">۳. مشخصات فردی و ثبت نهایی</h3>
+      
+      <div class="summary-card">
+        <div><strong>مشاور انتخابی:</strong> <span id="sum_counselor" style="color: var(--primary);">-</span></div>
+        <div><strong>زمان جلسه:</strong> <span id="sum_datetime" style="color: #fff;">-</span></div>
+      </div>
+
+      <form id="booking_form">
+        <div class="form-group">
+          <label>نام و نام خانوادگی:</label>
+          <input type="text" id="client_name" required placeholder="مثال: علی حسینی">
+        </div>
+
+        <div class="form-group">
+          <label>شماره تماس همراه:</label>
+          <input type="tel" id="client_phone" required placeholder="۰۹۱۲۳۴۵۶۷۸۹" dir="ltr">
+        </div>
+
+        <button type="submit" id="btn_submit_booking" class="btn-submit">تایید و ثبت نوبت در سیستم</button>
+      </form>
+    </div>
+
+  </div>
+
+  <!-- تب پیگیری نوبت‌های من -->
+  <div id="tab_my_bookings" style="display: none;">
+    <div class="card">
+      <h3 class="step-title">پیگیری نوبت‌های ثبت‌شده</h3>
+      <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+        <input type="tel" id="search_phone" placeholder="شماره تماس خود را وارد کنید..." dir="ltr" style="flex: 2; padding: 12px; background: var(--input-bg); border: 1px solid var(--card-border); border-radius: 10px; color: #fff;">
+        <button type="button" class="btn-submit" style="flex: 1;" onclick="searchBookings()">جستجو</button>
+      </div>
+
+      <div id="my_bookings_result">
+        <div style="text-align: center; color: var(--text-muted); padding: 20px;">برای مشاهده نوبت‌های خود، شماره تماستان را وارد و جستجو کنید.</div>
+      </div>
     </div>
   </div>
 
+</div>
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwQNRp6anbyhNDlTXGnvHnSwHUHy7RTqQhQ6oNodgZVwCQiM8Lx9MOAVCZce2_NWUNZ/exec";
+
+let state = {
+  counselors: [],
+  appointmentsList: [],
+  selectedCounselor: "",
+  selectedDate: "",
+  selectedTime: ""
+};
+
+const TIME_SLOTS = [
+  "۰۹:۰۰ - ۱۰:۰۰",
+  "۱۰:۰۰ - ۱۱:۰۰",
+  "۱۱:۰۰ - ۱۲:۰۰",
+  "۱۲:۰۰ - ۱۳:۰۰",
+  "۱۳:۰۰ - ۱۴:۰۰",
+  "۱۴:۰۰ - ۱۵:۰۰",
+  "۱۵:۰۰ - ۱۶:۰۰",
+  "۱۶:۰۰ - ۱۷:۰۰",
+  "۱۷:۰۰ - ۱۸:۰۰",
+  "۱۸:۰۰ - ۱۹:۰۰",
+  "۱۹:۰۰ - ۲۰:۰۰",
+  "۲۰:۰۰ - ۲۱:۰۰"
+];
+
+function initClient() {
+  const now = new Date();
+  const shamsiToday = new Intl.DateTimeFormat('fa-IR', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(now);
+  document.getElementById("today_date").innerText = "امروز: " + shamsiToday;
+  fetchData();
+}
+
+async function fetchData() {
+  document.getElementById("loading_status").style.display = "block";
+  try {
+    const [initRes, appRes] = await Promise.all([
+      fetch(SCRIPT_URL + "?action=getInitialData").then(r => r.json()),
+      fetch(SCRIPT_URL + "?action=getAppointments").then(r => r.json())
+    ]);
+
+    if (initRes.status === "success") {
+      state.counselors = initRes.counselors || [];
+      renderCounselorDropdown();
+    }
+    if (appRes.status === "success") {
+      state.appointmentsList = appRes.appointments || [];
+    }
+  } catch (err) {
+    console.error("خطا در همگام‌سازی:", err);
+  } finally {
+    document.getElementById("loading_status").style.display = "none";
+  }
+}
+
+function renderCounselorDropdown() {
+  const sel = document.getElementById("counselor_select");
+  sel.innerHTML = '<option value="" disabled selected>مشاور را انتخاب کنید...</option>';
+  state.counselors.forEach(c => {
+    const opt = document.createElement("option");
+    opt.value = c.name;
+    opt.innerText = c.name;
+    sel.appendChild(opt);
+  });
+}
+
+function onCounselorChange() {
+  state.selectedCounselor = document.getElementById("counselor_select").value;
+  state.selectedDate = "";
+  state.selectedTime = "";
+  document.getElementById("schedule_card").style.display = "block";
+  document.getElementById("form_card").style.display = "none";
+  renderDaysGrid();
+  document.getElementById("slots_container").innerHTML = 
+    '<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 15px;">روز مورد نظر را انتخاب کنید.</div>';
+}
+
+function getUpcomingDays(count = 7) {
+  const days = [];
+  const dayNames = ["یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنجشنبه", "جمعه", "شنبه"];
+  const now = new Date();
+
+  for (let i = 0; i < count; i++) {
+    const d = new Date(now);
+    d.setDate(now.getDate() + i);
+    const shamsiStr = new Intl.DateTimeFormat('fa-IR', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(d);
+    days.push({
+      dayName: dayNames[d.getDay()],
+      shamsiDate: shamsiStr
+    });
+  }
+  return days;
+}
+
+function renderDaysGrid() {
+  const container = document.getElementById("days_container");
+  container.innerHTML = "";
+  const upcoming = getUpcomingDays(7);
+
+  upcoming.forEach(day => {
+    const cleanDay = day.shamsiDate.replace(/[\u200B-\u200D\uFEFF\u200E\u200F']/g, "").trim();
+    
+    // آیا کل روز توسط مشاور مسدود شده؟
+    const isBlocked = state.appointmentsList.some(a => 
+      a.counselor === state.selectedCounselor &&
+      a.appointmentDate.replace(/[\u200B-\u200D\uFEFF\u200E\u200F']/g, "").trim() === cleanDay &&
+      a.slotType === "blocked_day"
+    );
+
+    const pill = document.createElement("div");
+    pill.className = "day-pill" + (isBlocked ? " blocked" : "");
+    pill.innerHTML = `
+      <div style="font-weight:bold; font-size:0.85rem;">${day.dayName}</div>
+      <div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">${day.shamsiDate}</div>
+      ${isBlocked ? '<div style="font-size:0.65rem; color:var(--danger); margin-top:2px;">عدم حضور</div>' : ''}
+    `;
+
+    if (!isBlocked) {
+      pill.onclick = () => {
+        document.querySelectorAll(".day-pill").forEach(p => p.classList.remove("selected"));
+        pill.classList.add("selected");
+        state.selectedDate = day.shamsiDate;
+        state.selectedTime = "";
+        document.getElementById("form_card").style.display = "none";
+        renderSlotsGrid();
+      };
+    }
+    container.appendChild(pill);
+  });
+}
+
+function renderSlotsGrid() {
+  const container = document.getElementById("slots_container");
+  container.innerHTML = "";
+  const cleanDate = state.selectedDate.replace(/[\u200B-\u200D\uFEFF\u200E\u200F']/g, "").trim();
+
+  TIME_SLOTS.forEach(slot => {
+    // آیا این ساعت قبلاً رزرو شده است؟
+    const isOccupied = state.appointmentsList.some(a => 
+      a.counselor === state.selectedCounselor &&
+      a.appointmentDate.replace(/[\u200B-\u200D\uFEFF\u200E\u200F']/g, "").trim() === cleanDate &&
+      a.appointmentTime.includes(slot.split(" - ")[0]) &&
+      a.status !== "کنسل شده"
+    );
+
+    const slotEl = document.createElement("div");
+    slotEl.className = "slot-item " + (isOccupied ? "occupied" : "available");
+    slotEl.innerText = isOccupied ? `${slot} (پر)` : slot;
+
+    if (!isOccupied) {
+      slotEl.onclick = () => {
+        document.querySelectorAll(".slot-item").forEach(s => s.classList.remove("selected"));
+        slotEl.classList.add("selected");
+        state.selectedTime = slot;
+        showBookingForm();
+      };
+    }
+    container.appendChild(slotEl);
+  });
+}
+
+function showBookingForm() {
+  document.getElementById("sum_counselor").innerText = state.selectedCounselor;
+  document.getElementById("sum_datetime").innerText = `${state.selectedDate} ساعت ${state.selectedTime}`;
+  document.getElementById("form_card").style.display = "block";
+  document.getElementById("form_card").scrollIntoView({ behavior: 'smooth' });
+}
+
+document.getElementById("booking_form").addEventListener("submit", async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById("btn_submit_booking");
+  btn.disabled = true;
+  btn.innerText = "در حال رزرو نوبت شما...";
+
+  const name = document.getElementById("client_name").value.trim();
+  const phone = document.getElementById("client_phone").value.trim();
+
+  const payload = {
+    action: "addAppointment",
+    counselor: state.selectedCounselor,
+    appointmentDate: state.selectedDate,
+    appointmentTime: state.selectedTime,
+    clientName: name,
+    clientPhone: phone,
+    deposit: 0,
+    slotType: "full",
+    status: "رزرو شده",
+    operator: "ثبت آنلاین مراجع"
+  };
+
+  try {
+    await fetch(SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    alert("نوبت شما با موفقیت رزرو شد! همکاران پذیرش جهت هماهنگی با شما در تماس خواهند بود.");
+    document.getElementById("booking_form").reset();
+    document.getElementById("form_card").style.display = "none";
+    document.getElementById("schedule_card").style.display = "none";
+    document.getElementById("counselor_select").value = "";
+    setTimeout(fetchData, 1500);
+  } catch (err) {
+    alert("خطا در رزرو نوبت. لطفاً دوباره تلاش کنید.");
+  } finally {
+    btn.disabled = false;
+    btn.innerText = "تایید و ثبت نوبت در سیستم";
+  }
+});
+
+function switchClientTab(tab) {
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+  if (tab === 'booking') {
+    document.querySelectorAll(".tab-btn")[0].classList.add("active");
+    document.getElementById("tab_booking").style.display = "block";
+    document.getElementById("tab_my_bookings").style.display = "none";
+  } else {
+    document.querySelectorAll(".tab-btn")[1].classList.add("active");
+    document.getElementById("tab_booking").style.display = "none";
+    document.getElementById("tab_my_bookings").style.display = "block";
+  }
+}
+
+function searchBookings() {
+  const queryPhone = document.getElementById("search_phone").value.trim();
+  const resultContainer = document.getElementById("my_bookings_result");
+  if (!queryPhone) {
+    alert("لطفاً شماره تماس خود را وارد کنید.");
+    return;
+  }
+
+  const cleanQuery = queryPhone.replace(/[۰-۹]/g, w => String.fromCharCode(w.charCodeAt(0) - 1728));
+  const myApps = state.appointmentsList.filter(a => {
+    const raw = (a.clientPhone || "").toString().replace(/[۰-۹]/g, w => String.fromCharCode(w.charCodeAt(0) - 1728));
+    return raw.includes(cleanQuery) && a.status !== "کنسل شده";
+  });
+
+  if (myApps.length === 0) {
+    resultContainer.innerHTML = '<div style="text-align:center; color:var(--text-muted); padding:20px;">هیچ نوبت فعالی با این شماره تماس پیدا نشد.</div>';
+    return;
+  }
+
+  resultContainer.innerHTML = "";
+  myApps.forEach(app => {
+    const item = document.createElement("div");
+    item.className = "booking-list-item";
+    item.innerHTML = `
+      <div>
+        <div style="font-weight:bold; color:#fff; font-size:1rem;">مشاور: ${app.counselor}</div>
+        <div style="color:var(--text-muted); font-size:0.85rem; margin-top:4px;">
+          📅 تاریخ: ${app.appointmentDate} | ⏰ ساعت: ${app.appointmentTime}
+        </div>
+      </div>
+      <div>
+        <span class="badge ${app.status === 'برگزار شده' ? 'badge-completed' : 'badge-reserved'}">${app.status}</span>
+      </div>
+    `;
+    resultContainer.appendChild(item);
+  });
+}
+
+initClient();
+</script>
 </body>
 </html>
