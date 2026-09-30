@@ -92,7 +92,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
       transition: 0.2s;
     }
     .tab-btn.active {
@@ -259,7 +258,6 @@
       font-size: 0.85rem;
     }
 
-    /* نشانگر نسخه برنامه در گوشه پایین سمت چپ */
     .app-version-badge {
       position: fixed;
       bottom: 10px;
@@ -282,8 +280,7 @@
 </head>
 <body>
 
-<!-- نشانگر نسخه مراجعین -->
-<div class="app-version-badge">v2.5.0-client</div>
+<div class="app-version-badge">v2.6.0-client</div>
 
 <div id="auth_overlay">
   <div class="auth-card">
@@ -307,7 +304,7 @@
       <span class="auth-toggle-link" onclick="switchAuthMode('step1_register')">مراجع جدید هستید؟ ثبت‌‌نام اولیه</span>
     </div>
 
-    <!-- ۲. مرحله ۱ ثبت‌‌نام -->
+    <!-- ۲. مرحله ۱ ثبت‌نام -->
     <div id="auth_reg_step1_view" style="display: none;">
       <form id="form_reg_step1">
         <div class="form-group">
@@ -347,7 +344,7 @@
     <!-- ۴. مرحله ۳ تعیین نام کاربری و رمز عبور دائمی -->
     <div id="auth_reg_step3_credentials" style="display: none;">
       <p style="font-size: 0.85rem; color: var(--success); margin-top: 0;">
-        ✓ شماره تایید شد. لطفاً نام کاربری و رمز عبور اختصاصی خود را تعیین کنید:
+        شماره تایید شد. لطفاً نام کاربری و رمز عبور اختصاصی خود را تعیین کنید:
       </p>
       <form id="form_reg_step3">
         <div class="form-group">
@@ -376,15 +373,15 @@
     </div>
     
     <div class="user-profile-badge">
-      <span>👤 <strong id="logged_user_name" style="color: #fff;">-</strong></span>
-      <button onclick="clientLogout()" style="background:transparent; border:none; color:var(--danger); cursor:pointer; font-size:0.8rem; font-weight:bold;">(خروج)</button>
+      <span>کاربر: <strong id="logged_user_name" style="color: #fff;">-</strong></span>
+      <button onclick="clientLogout(false)" style="background:transparent; border:none; color:var(--danger); cursor:pointer; font-size:0.8rem; font-weight:bold;">(خروج)</button>
     </div>
   </div>
 
   <div class="nav-tabs">
-    <button class="tab-btn active" id="btn_nav_book" onclick="switchClientTab('book')">📅 رزرو نوبت مشاوره</button>
-    <button class="tab-btn" id="btn_nav_my_apps" onclick="switchClientTab('my_apps')">🗂 وقت‌های من</button>
-    <button class="tab-btn" id="btn_nav_profile" onclick="switchClientTab('profile')">👤 پرونده و مشخصات من</button>
+    <button class="tab-btn active" id="btn_nav_book" onclick="switchClientTab('book')">رزرو نوبت مشاوره</button>
+    <button class="tab-btn" id="btn_nav_my_apps" onclick="switchClientTab('my_apps')">وقت‌های من</button>
+    <button class="tab-btn" id="btn_nav_profile" onclick="switchClientTab('profile')">پرونده و مشخصات من</button>
   </div>
 
   <div id="loading_indicator">در حال بارگذاری اطلاعات نوبت‌ها و مشاوران...</div>
@@ -407,7 +404,7 @@
       <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 8px;">روز مراجعه:</label>
       <div class="days-grid" id="days_container"></div>
 
-      <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 8px;">ساعت‌های خالی:</label>
+      <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 8px;">ساعت‌های خالی و قابل رزرو:</label>
       <div class="slots-grid" id="slots_container">
         <div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 14px;">ابتدا یک روز را انتخاب کنید.</div>
       </div>
@@ -433,7 +430,7 @@
     <div class="card">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
         <h3 class="card-title" style="margin: 0;">نوبت‌های من</h3>
-        <button type="button" onclick="fetchMyAppointments()" style="background: transparent; border: 1px solid var(--card-border); color: var(--text-muted); padding: 4px 10px; border-radius: 6px; font-size: 0.78rem; cursor: pointer;">🔄 بروزرسانی</button>
+        <button type="button" onclick="fetchMyAppointments()" style="background: transparent; border: 1px solid var(--card-border); color: var(--text-muted); padding: 4px 10px; border-radius: 6px; font-size: 0.78rem; cursor: pointer;">بروزرسانی</button>
       </div>
 
       <div style="margin-bottom: 10px; font-size: 0.92rem; font-weight: bold; color: var(--primary);">جلسات آینده (پیش‌رو):</div>
@@ -477,6 +474,9 @@
 
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwQNRp6anbyhNDlTXGnvHnSwHUHy7RTqQhQ6oNodgZVwCQiM8Lx9MOAVCZce2_NWUNZ/exec";
+
+// ۳ ساعت بر حسب میلی‌ثانیه
+const INACTIVITY_LIMIT_MS = 3 * 60 * 60 * 1000;
 
 let state = {
   counselors: [],
@@ -522,6 +522,40 @@ function cleanStr(s) {
   return String(s).replace(/[\u200B-\u200D\uFEFF\u200E\u200F']/g, "").trim();
 }
 
+// -------------------------------------------------------------
+// منطق خروج خودکار پس از ۳ ساعت عدم فعالیت (Inactivity Timeout)
+// -------------------------------------------------------------
+function resetInactivityTimer() {
+  if (state.currentUser) {
+    localStorage.setItem("client_last_activity", Date.now().toString());
+  }
+}
+
+function checkInactivityExpiration() {
+  const lastActivity = localStorage.getItem("client_last_activity");
+  if (lastActivity && state.currentUser) {
+    const elapsed = Date.now() - parseInt(lastActivity, 10);
+    if (elapsed > INACTIVITY_LIMIT_MS) {
+      alert("به دلیل عدم فعالیت بیش از ۳ ساعت، نشست شما منقضی شد. لطفاً دوباره وارد شوید.");
+      clientLogout(true);
+      return true;
+    }
+  }
+  return false;
+}
+
+// گوش دادن به تعاملات کاربر جهت تازه‌سازی تایمر
+['click', 'touchstart', 'keypress', 'mousemove', 'scroll'].forEach(evt => {
+  window.addEventListener(evt, () => resetInactivityTimer(), { passive: true });
+});
+
+// بررسی دوره‌ای زمان انقضا هر ۱ دقیقه
+setInterval(() => {
+  if (state.currentUser) {
+    checkInactivityExpiration();
+  }
+}, 60000);
+
 function initClientPortal() {
   checkAuthAndRender();
 }
@@ -536,10 +570,16 @@ function checkAuthAndRender() {
     }
   }
 
+  // بررسی عدم انقضای ۳ ساعته قبل از ورود
+  if (state.currentUser && checkInactivityExpiration()) {
+    return;
+  }
+
   const overlay = document.getElementById("auth_overlay");
   const mainApp = document.getElementById("main_client_app");
 
   if (state.currentUser) {
+    resetInactivityTimer();
     overlay.style.display = "none";
     mainApp.style.display = "block";
 
@@ -557,9 +597,10 @@ function checkAuthAndRender() {
   }
 }
 
-function clientLogout() {
-  if (!confirm("آیا قصد خروج از حساب کاربری را دارید؟")) return;
+function clientLogout(forced = false) {
+  if (!forced && !confirm("آیا قصد خروج از حساب کاربری را دارید؟")) return;
   localStorage.removeItem("client_user");
+  localStorage.removeItem("client_last_activity");
   state.currentUser = null;
   checkAuthAndRender();
 }
@@ -615,7 +656,7 @@ function onCounselorSelectChange() {
 
 function getUpcomingDays(count = 10) {
   const days = [];
-  const dayNames = ["یکشنبه", "دوشنبه", "سه‌‌شنبه", "چهارشنبه", "پنجشنبه", "جمعه", "شنبه"];
+  const dayNames = ["یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنجشنبه", "جمعه", "شنبه"];
   const now = new Date();
 
   for (let i = 0; i < count; i++) {
@@ -673,14 +714,18 @@ function renderDaysGrid() {
   });
 }
 
-// رندر اسلات‌ها با الگوریتم هوشمند هسته میانی و پر کردن پیوسته زمان
+// -------------------------------------------------------------
+// الگوریتم انتخاب ساعت:
+// اگر روز خالی باشد: همه ساعات شیفت برای نفر اول باز است.
+// اگر نوبتی ثبت شده باشد: فقط اسلات‌های چسبیده (قبل و بعد) فعال می‌شوند.
+// -------------------------------------------------------------
 function renderSlotsGrid() {
   const container = document.getElementById("slots_container");
   container.innerHTML = "";
   const cleanDate = cleanStr(state.selectedDate);
   const sched = state.dutySchedules[state.selectedCounselor] || null;
 
-  // ۱. شناسایی کلیه اسلات‌های داخل شیفت کاری مشاور
+  // ۱. استخراج اسلات‌های شیفت این مشاور
   const dutySlots = TIME_SLOTS.filter(slot => {
     if (sched) {
       if (sched.start && slot.start < sched.start) return false;
@@ -694,7 +739,7 @@ function renderSlotsGrid() {
     return;
   }
 
-  // ۲. استخراج نوبت‌های اشغال‌شده مشاور در این روز
+  // ۲. استخراج نوبت‌های اشغال‌شده
   const reservedIndices = [];
   dutySlots.forEach((slot, index) => {
     const isOccupied = state.appointmentsList.some(a => {
@@ -712,22 +757,14 @@ function renderSlotsGrid() {
     }
   });
 
-  // ۳. محاسبه ایندکس‌های مجاز برای رزرو
   let allowedIndices = new Set();
 
+  // ۳. سناریوی اول: هیچ نوبتی هنوز ثبت نشده است -> نفر اول به تمامی ساعات شیفت دسترسی دارد
   if (reservedIndices.length === 0) {
-    // سناریو مراجع اول: ارائه ۳ ساعت میانی و استاندارد شیفت
-    const total = dutySlots.length;
-    if (total <= 3) {
-      dutySlots.forEach((_, i) => allowedIndices.add(i));
-    } else {
-      const startIdx = Math.max(0, Math.floor((total - 3) / 2));
-      allowedIndices.add(startIdx);
-      allowedIndices.add(startIdx + 1);
-      allowedIndices.add(startIdx + 2);
-    }
-  } else {
-    // سناریو مراجعین بعدی: فقط اسلات چسبیده قبل و بعد
+    dutySlots.forEach((_, i) => allowedIndices.add(i));
+  } 
+  // سناریوی دوم: حداقل یک نوبت ثبت شده است -> فقط همسایه قبل و همسایه بعد مجاز می‌شوند
+  else {
     reservedIndices.forEach(idx => {
       if (idx - 1 >= 0 && !reservedIndices.includes(idx - 1)) {
         allowedIndices.add(idx - 1);
@@ -737,7 +774,7 @@ function renderSlotsGrid() {
       }
     });
 
-    // اگر تمام همسایه‌ها تکمیل بودند، سایر جاهای خالی فعال شوند
+    // در صورتی که تمام همسایه‌های متصل پر شده باشند، سایر اسلات‌های آزاد باز می‌شوند
     if (allowedIndices.size === 0) {
       dutySlots.forEach((_, i) => {
         if (!reservedIndices.includes(i)) allowedIndices.add(i);
@@ -747,12 +784,12 @@ function renderSlotsGrid() {
 
   let hasAvailableSlot = false;
 
-  // ۴. رسم دکمه‌های اسلات بر اساس استایل استاندارد فایل مرجع
+  // ۴. رسم اسلات‌های مجاز
   dutySlots.forEach((slot, index) => {
     const isOccupied = reservedIndices.includes(index);
     const isAllowed = allowedIndices.has(index);
 
-    // اسلاتی که نه اشغال شده و نه در زنجیره مجاز است، مخفی می‌ماند تا فاصله زمانی ایجاد نشود
+    // اسلات‌های اشغال‌نشده‌ای که چسبیده به زنجیره نیستند، مخفی می‌مانند تا وقت مرده ایجاد نشود
     if (!isOccupied && !isAllowed) return;
 
     const slotEl = document.createElement("div");
@@ -862,7 +899,7 @@ function fetchMyAppointments() {
       card.innerHTML = `
         <div class="app-meta">
           <div><strong>مشاور:</strong> ${app.counselor}</div>
-          <div style="color:var(--warning); font-weight:bold;">📅 ${app.appointmentDate} (ساعت ${app.appointmentTime})</div>
+          <div style="color:var(--warning); font-weight:bold;">${app.appointmentDate} (ساعت ${app.appointmentTime})</div>
           <div style="font-size:0.8rem; color:var(--text-muted);">کد پیگیری: ${app.id || "-"}</div>
         </div>
         <div>
@@ -882,7 +919,7 @@ function fetchMyAppointments() {
       card.innerHTML = `
         <div class="app-meta">
           <div><strong>مشاور:</strong> ${app.counselor}</div>
-          <div>📅 ${app.appointmentDate} (ساعت ${app.appointmentTime})</div>
+          <div>${app.appointmentDate} (ساعت ${app.appointmentTime})</div>
         </div>
         <div>
           <span class="status-badge badge-done">برگزار شده</span>
@@ -1042,6 +1079,7 @@ document.getElementById("form_reg_step3").addEventListener("submit", async funct
     if (result.status === "success") {
       state.currentUser = result.user;
       localStorage.setItem("client_user", JSON.stringify(state.currentUser));
+      resetInactivityTimer();
       alert("حساب کاربری شما با موفقیت ساخته شد و وارد سامانه شدید.");
       checkAuthAndRender();
     } else {
@@ -1080,6 +1118,7 @@ document.getElementById("form_login").addEventListener("submit", async function(
     if (result.status === "success") {
       state.currentUser = result.user;
       localStorage.setItem("client_user", JSON.stringify(state.currentUser));
+      resetInactivityTimer();
       checkAuthAndRender();
     } else {
       alert(result.message || "نام کاربری یا رمز عبور اشتباه است.");
