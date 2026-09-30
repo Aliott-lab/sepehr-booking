@@ -258,9 +258,32 @@
       color: var(--primary);
       font-size: 0.85rem;
     }
+
+    /* نشانگر نسخه برنامه در گوشه پایین سمت چپ */
+    .app-version-badge {
+      position: fixed;
+      bottom: 10px;
+      left: 12px;
+      z-index: 3000;
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      font-weight: bold;
+      padding: 3px 8px;
+      border-radius: 6px;
+      backdrop-filter: blur(4px);
+      user-select: none;
+      pointer-events: none;
+      letter-spacing: 0.5px;
+      direction: ltr;
+    }
   </style>
 </head>
 <body>
+
+<!-- نشانگر نسخه مراجعین -->
+<div class="app-version-badge">v2.5.0-client</div>
 
 <div id="auth_overlay">
   <div class="auth-card">
@@ -284,7 +307,7 @@
       <span class="auth-toggle-link" onclick="switchAuthMode('step1_register')">مراجع جدید هستید؟ ثبت‌‌نام اولیه</span>
     </div>
 
-    <!-- ۲. مرحله ۱ ثبت‌نام -->
+    <!-- ۲. مرحله ۱ ثبت‌‌نام -->
     <div id="auth_reg_step1_view" style="display: none;">
       <form id="form_reg_step1">
         <div class="form-group">
@@ -592,7 +615,7 @@ function onCounselorSelectChange() {
 
 function getUpcomingDays(count = 10) {
   const days = [];
-  const dayNames = ["یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنجشنبه", "جمعه", "شنبه"];
+  const dayNames = ["یکشنبه", "دوشنبه", "سه‌‌شنبه", "چهارشنبه", "پنجشنبه", "جمعه", "شنبه"];
   const now = new Date();
 
   for (let i = 0; i < count; i++) {
@@ -650,23 +673,30 @@ function renderDaysGrid() {
   });
 }
 
+// رندر اسلات‌ها با الگوریتم هوشمند هسته میانی و پر کردن پیوسته زمان
 function renderSlotsGrid() {
   const container = document.getElementById("slots_container");
   container.innerHTML = "";
   const cleanDate = cleanStr(state.selectedDate);
   const sched = state.dutySchedules[state.selectedCounselor] || null;
 
-  let hasAvailableSlot = false;
-
-  TIME_SLOTS.forEach(slot => {
-    let isHourInDuty = true;
+  // ۱. شناسایی کلیه اسلات‌های داخل شیفت کاری مشاور
+  const dutySlots = TIME_SLOTS.filter(slot => {
     if (sched) {
-      if (sched.start && slot.start < sched.start) isHourInDuty = false;
-      if (sched.end && slot.end > sched.end) isHourInDuty = false;
+      if (sched.start && slot.start < sched.start) return false;
+      if (sched.end && slot.end > sched.end) return false;
     }
+    return true;
+  });
 
-    if (!isHourInDuty) return;
+  if (dutySlots.length === 0) {
+    container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--danger); padding: 15px;">در این روز شیفت فعالی تعریف نشده است.</div>`;
+    return;
+  }
 
+  // ۲. استخراج نوبت‌های اشغال‌شده مشاور در این روز
+  const reservedIndices = [];
+  dutySlots.forEach((slot, index) => {
     const isOccupied = state.appointmentsList.some(a => {
       if (cleanStr(a.counselor) !== cleanStr(state.selectedCounselor)) return false;
       if (cleanStr(a.appointmentDate) !== cleanDate) return false;
@@ -674,11 +704,56 @@ function renderSlotsGrid() {
 
       const appT = cleanStr(a.appointmentTime);
       const slotL = cleanStr(slot.label);
-
-      if (appT === slotL) return true;
-      if (appT.startsWith(slot.label.split(" - ")[0])) return true;
-      return false;
+      return appT === slotL || appT.startsWith(slot.label.split(" - ")[0]);
     });
+
+    if (isOccupied) {
+      reservedIndices.push(index);
+    }
+  });
+
+  // ۳. محاسبه ایندکس‌های مجاز برای رزرو
+  let allowedIndices = new Set();
+
+  if (reservedIndices.length === 0) {
+    // سناریو مراجع اول: ارائه ۳ ساعت میانی و استاندارد شیفت
+    const total = dutySlots.length;
+    if (total <= 3) {
+      dutySlots.forEach((_, i) => allowedIndices.add(i));
+    } else {
+      const startIdx = Math.max(0, Math.floor((total - 3) / 2));
+      allowedIndices.add(startIdx);
+      allowedIndices.add(startIdx + 1);
+      allowedIndices.add(startIdx + 2);
+    }
+  } else {
+    // سناریو مراجعین بعدی: فقط اسلات چسبیده قبل و بعد
+    reservedIndices.forEach(idx => {
+      if (idx - 1 >= 0 && !reservedIndices.includes(idx - 1)) {
+        allowedIndices.add(idx - 1);
+      }
+      if (idx + 1 < dutySlots.length && !reservedIndices.includes(idx + 1)) {
+        allowedIndices.add(idx + 1);
+      }
+    });
+
+    // اگر تمام همسایه‌ها تکمیل بودند، سایر جاهای خالی فعال شوند
+    if (allowedIndices.size === 0) {
+      dutySlots.forEach((_, i) => {
+        if (!reservedIndices.includes(i)) allowedIndices.add(i);
+      });
+    }
+  }
+
+  let hasAvailableSlot = false;
+
+  // ۴. رسم دکمه‌های اسلات بر اساس استایل استاندارد فایل مرجع
+  dutySlots.forEach((slot, index) => {
+    const isOccupied = reservedIndices.includes(index);
+    const isAllowed = allowedIndices.has(index);
+
+    // اسلاتی که نه اشغال شده و نه در زنجیره مجاز است، مخفی می‌ماند تا فاصله زمانی ایجاد نشود
+    if (!isOccupied && !isAllowed) return;
 
     const slotEl = document.createElement("div");
     slotEl.className = "slot-item " + (isOccupied ? "occupied" : "available");
