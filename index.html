@@ -3,1135 +3,1289 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>پرتال مراجعین | کلینیک روان‌‌شناسی سپهر آرامش</title>
-  <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#1B6B66">
+  <title>پرتال مراجعین | کلینیک روان‌شناسی سپهر آرامش</title>
+  <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css">
   <style>
+    /* ---------- توکن‌های طراحی ---------- */
     :root {
-      --bg-main: #0b0f19;
-      --card-bg: #161f30;
-      --card-border: #24324a;
-      --primary: #38bdf8;
-      --primary-hover: #0284c7;
-      --success: #22c55e;
-      --danger: #ef4444;
-      --warning: #f59e0b;
-      --purple: #a855f7;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --input-bg: #0f172a;
+      --paper: #EEF4F2;
+      --surface: #FFFFFF;
+      --sunken: #F4F8F7;
+      --ink: #10302D;
+      --ink-2: #47635F;
+      --line: #D1DEDB;
+      --brand: #1B6B66;
+      --brand-strong: #14524E;
+      --brand-ink: #FFFFFF;
+      --brand-tint: #DCEEEB;
+      --sun: #E9A94B;
+      --danger: #B23B2B;
+      --danger-tint: #FBE9E6;
+      --ok: #2B7A4B;
+      --ok-tint: #E1F3E7;
+      --warn-tint: #FDF1DC;
+      --shadow: 0 1px 2px rgba(16,48,45,.06), 0 14px 34px -18px rgba(16,48,45,.28);
+      --r-lg: 22px;
+      --r-md: 14px;
+      --r-sm: 10px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #0D1918;
+        --surface: #142524;
+        --sunken: #101E1D;
+        --ink: #E7F2F0;
+        --ink-2: #9DB8B4;
+        --line: #284240;
+        --brand: #5CC4BB;
+        --brand-strong: #86D8D0;
+        --brand-ink: #09201E;
+        --brand-tint: #1A3634;
+        --sun: #E9B25F;
+        --danger: #F08A79;
+        --danger-tint: #3A1F1B;
+        --ok: #7BD39B;
+        --ok-tint: #173023;
+        --warn-tint: #3A2F16;
+        --shadow: 0 1px 2px rgba(0,0,0,.3), 0 14px 34px -18px rgba(0,0,0,.6);
+      }
     }
 
-    * { box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; }
-    body { background-color: var(--bg-main); color: var(--text-main); margin: 0; padding: 15px 12px; line-height: 1.6; }
-    .container { max-width: 900px; margin: 0 auto; }
+    /* ---------- پایه ---------- */
+    *, *::before, *::after { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      font-family: 'Vazirmatn', system-ui, Tahoma, sans-serif;
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--ink);
+      background:
+        radial-gradient(90% 340px at 50% -120px, color-mix(in srgb, var(--sun) 24%, transparent), transparent 70%),
+        var(--paper);
+      background-repeat: no-repeat;
+      min-height: 100vh;
+      font-variant-numeric: tabular-nums;
+    }
+    h1, h2, h3, p { margin: 0; }
+    button, input, select { font: inherit; color: inherit; }
+    :focus-visible { outline: 3px solid color-mix(in srgb, var(--brand) 55%, transparent); outline-offset: 2px; }
+    .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; scroll-behavior: auto !important; } }
 
-    #auth_overlay {
-      position: fixed;
-      inset: 0;
-      background: var(--bg-main);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 2000;
-      padding: 15px;
+    .shell { max-width: 760px; margin: 0 auto; padding: 0 16px 56px; }
+
+    /* ---------- هدر ---------- */
+    .topbar {
+      position: relative;
+      display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+      padding: 18px 0 16px;
+      margin-bottom: 22px;
+    }
+    .topbar::after {
+      content: ""; position: absolute; inset-inline: 0; bottom: 0; height: 2px; border-radius: 2px;
+      background: linear-gradient(90deg, transparent, var(--sun) 30%, var(--brand) 70%, transparent);
+      opacity: .75;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .logo { width: 46px; height: 46px; object-fit: contain; flex: none; }
+    .logo-fallback {
+      width: 46px; height: 46px; flex: none; display: grid; place-items: center;
+      border-radius: 50%; background: var(--brand); color: var(--brand-ink); font-weight: 700; font-size: 1.2rem;
+    }
+    .brand h1 { font-size: 1.12rem; font-weight: 700; line-height: 1.5; }
+    .brand p { font-size: .82rem; color: var(--ink-2); }
+    .who { display: flex; align-items: center; gap: 10px; font-size: .88rem; color: var(--ink-2); }
+    .who strong { color: var(--ink); font-weight: 600; }
+    .link-btn {
+      background: none; border: 0; padding: 4px 2px; cursor: pointer;
+      color: var(--brand); font-weight: 600; text-decoration: underline; text-underline-offset: 4px;
+    }
+    .link-btn.danger { color: var(--danger); }
+    .link-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+    /* ---------- تب‌ها ---------- */
+    .tabs {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; margin-bottom: 20px;
+      background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md);
+    }
+    .tab {
+      border: 0; background: transparent; cursor: pointer; padding: 10px 6px;
+      border-radius: 10px; font-weight: 600; font-size: .92rem; color: var(--ink-2); transition: background .15s, color .15s;
+    }
+    .tab:hover { color: var(--ink); }
+    .tab[aria-selected="true"] { background: var(--brand-tint); color: var(--brand-strong); }
+
+    /* ---------- سطح‌ها ---------- */
+    .panel {
+      background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg);
+      box-shadow: var(--shadow); padding: 22px;
+    }
+    .section + .section { margin-top: 24px; padding-top: 24px; border-top: 1px dashed var(--line); }
+    .section-title { font-size: 1.02rem; font-weight: 700; margin-bottom: 4px; }
+    .section-help { font-size: .85rem; color: var(--ink-2); margin-bottom: 14px; }
+    .row-between { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+    .hint { color: var(--ink-2); font-size: .88rem; padding: 12px 4px; }
+    .span-all { grid-column: 1 / -1; }
+
+    /* ---------- مراحل رزرو ---------- */
+    .steps { display: flex; list-style: none; margin: 0 0 22px; padding: 0; }
+    .steps li {
+      flex: 1; position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px;
+      font-size: .82rem; color: var(--ink-2);
+    }
+    .steps li + li::before {
+      content: ""; position: absolute; top: 15px; inset-inline-end: 50%; width: 100%; height: 2px; background: var(--line);
+      transition: background .25s;
+    }
+    .steps li.is-done::before, .steps li.is-current::before { background: var(--brand); }
+    .steps .dot {
+      position: relative; z-index: 1; width: 32px; height: 32px; display: grid; place-items: center;
+      border-radius: 50%; background: var(--surface); border: 2px solid var(--line); font-weight: 700; font-size: .9rem;
+      transition: background .25s, border-color .25s, box-shadow .25s;
+    }
+    .steps li.is-current .dot {
+      border-color: var(--brand); color: var(--brand-strong); background: var(--brand-tint);
+      box-shadow: 0 0 0 5px color-mix(in srgb, var(--sun) 32%, transparent);
+    }
+    .steps li.is-done .dot { background: var(--brand); border-color: var(--brand); color: var(--brand-ink); }
+    .steps li.is-current, .steps li.is-done { color: var(--ink); font-weight: 600; }
+
+    /* ---------- فرم ---------- */
+    .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+    .field label { font-size: .86rem; color: var(--ink-2); font-weight: 500; }
+    .input, .select {
+      width: 100%; padding: 11px 14px; background: var(--sunken); color: var(--ink);
+      border: 1px solid var(--line); border-radius: 12px; outline: none; transition: border-color .15s, box-shadow .15s;
+    }
+    .input::placeholder { color: color-mix(in srgb, var(--ink-2) 70%, transparent); }
+    .input:focus, .select:focus { border-color: var(--brand); box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 22%, transparent); }
+    .select-wrap { position: relative; }
+    .select { appearance: none; -webkit-appearance: none; padding-inline-end: 40px; cursor: pointer; }
+    .select:disabled { opacity: .6; cursor: wait; }
+    .select-wrap::after {
+      content: ""; position: absolute; inset-inline-end: 16px; top: 50%; width: 8px; height: 8px; pointer-events: none;
+      border-right: 2px solid var(--ink-2); border-bottom: 2px solid var(--ink-2); transform: translateY(-70%) rotate(45deg);
+    }
+    .pw { position: relative; }
+    .pw .input { padding-left: 66px; }
+    .pw-toggle {
+      position: absolute; left: 8px; top: 50%; transform: translateY(-50%);
+      background: none; border: 0; cursor: pointer; padding: 4px 8px; border-radius: 8px;
+      font-size: .8rem; color: var(--brand); font-weight: 600;
+    }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0 14px; }
+    .form-error {
+      margin: 0 0 12px; padding: 10px 12px; border-radius: var(--r-sm); font-size: .88rem;
+      background: var(--danger-tint); color: var(--danger); border: 1px solid color-mix(in srgb, var(--danger) 35%, transparent);
+    }
+    .notice {
+      margin: 0 0 16px; padding: 10px 12px; border-radius: var(--r-sm); font-size: .86rem; text-align: right;
+      background: var(--warn-tint); border: 1px solid color-mix(in srgb, var(--sun) 55%, transparent);
+    }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      border: 1px solid transparent; border-radius: 12px; padding: 12px 18px; cursor: pointer;
+      font-weight: 700; transition: background .15s, transform .05s, opacity .15s;
+    }
+    .btn:active:not(:disabled) { transform: translateY(1px); }
+    .btn:disabled { opacity: .6; cursor: not-allowed; }
+    .btn-primary { background: var(--brand); color: var(--brand-ink); }
+    .btn-primary:hover:not(:disabled) { background: var(--brand-strong); }
+    .btn-quiet { background: transparent; border-color: var(--line); color: var(--ink-2); padding: 7px 14px; font-weight: 600; font-size: .85rem; }
+    .btn-quiet:hover:not(:disabled) { border-color: var(--brand); color: var(--brand); }
+    .btn-danger { background: var(--danger); color: #fff; }
+    .btn-block { width: 100%; }
+
+    /* ---------- انتخاب روز و ساعت ---------- */
+    .days { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 10px; }
+    .slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(124px, 1fr)); gap: 10px; }
+    .chip {
+      border: 1px solid var(--line); background: var(--sunken); border-radius: 12px; cursor: pointer;
+      padding: 10px 6px; text-align: center; line-height: 1.5; transition: border-color .15s, background .15s;
+    }
+    .chip:hover:not(:disabled):not([aria-pressed="true"]) { border-color: var(--brand); }
+    .chip[aria-pressed="true"] { background: var(--brand); border-color: var(--brand); color: var(--brand-ink); }
+    .chip:disabled { cursor: not-allowed; opacity: .55; }
+    .chip .d1 { display: block; font-weight: 700; font-size: .88rem; }
+    .chip .d2 { display: block; font-size: .74rem; opacity: .8; }
+    .chip .d3 { display: block; font-size: .7rem; color: var(--danger); }
+    .slot { font-size: .86rem; font-weight: 600; padding: 11px 6px; border-radius: 10px; }
+    .slot.is-full { text-decoration: line-through; background: transparent; border-style: dashed; }
+    .slot small { display: block; font-size: .7rem; }
+
+    /* ---------- خلاصه‌ی نوبت ---------- */
+    .summary { margin: 0 0 16px; padding: 14px 16px; border-radius: var(--r-md); background: var(--sunken); border: 1px dashed var(--line); }
+    .summary div { display: flex; gap: 8px; flex-wrap: wrap; padding: 3px 0; }
+    .summary dt { color: var(--ink-2); font-size: .88rem; min-width: 84px; }
+    .summary dd { margin: 0; font-weight: 600; }
+    .fine { font-size: .8rem; color: var(--ink-2); margin-top: 10px; text-align: center; }
+
+    /* ---------- نوبت‌های من ---------- */
+    .group-title { font-size: .92rem; font-weight: 700; margin: 4px 0 10px; }
+    .group-title.muted { color: var(--ink-2); margin-top: 26px; }
+    .appt {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+      padding: 14px 16px; margin-bottom: 10px; border-radius: var(--r-md);
+      background: var(--sunken); border: 1px solid var(--line); border-inline-start: 4px solid var(--brand);
+    }
+    .appt.is-past { border-inline-start-color: var(--line); }
+    .appt .who-line { font-weight: 700; }
+    .appt .when { font-weight: 600; }
+    .appt .meta { font-size: .8rem; color: var(--ink-2); }
+    .badge { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: .76rem; font-weight: 700; }
+    .badge-upcoming { background: var(--brand-tint); color: var(--brand-strong); }
+    .badge-done { background: var(--ok-tint); color: var(--ok); }
+    .empty { text-align: center; padding: 20px 8px; color: var(--ink-2); font-size: .9rem; }
+    .empty .btn { margin-top: 12px; }
+
+    /* ---------- پرونده ---------- */
+    .facts { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px 20px; }
+    .facts dt { font-size: .8rem; color: var(--ink-2); }
+    .facts dd { margin: 0; font-weight: 600; word-break: break-word; }
+
+    /* ---------- بارگذاری ---------- */
+    .skeleton { height: 14px; border-radius: 8px; background: linear-gradient(90deg, var(--line), var(--sunken), var(--line)); background-size: 200% 100%; animation: shimmer 1.4s infinite linear; }
+    @keyframes shimmer { to { background-position: -200% 0; } }
+    .load-error {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+      margin-bottom: 16px; padding: 12px 14px; border-radius: var(--r-md); font-size: .9rem;
+      background: var(--danger-tint); color: var(--danger); border: 1px solid color-mix(in srgb, var(--danger) 35%, transparent);
+    }
+
+    /* ---------- ورود و ثبت‌نام ---------- */
+    .auth {
+      position: fixed; inset: 0; z-index: 100; overflow: auto; display: grid; place-items: center; padding: 16px;
+      background:
+        radial-gradient(120% 55% at 50% 112%, color-mix(in srgb, var(--sun) 38%, transparent), transparent 62%),
+        var(--paper);
     }
     .auth-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 22px;
-      padding: 32px 26px;
-      max-width: 420px;
-      width: 100%;
-      box-shadow: 0 12px 45px rgba(0,0,0,0.65);
-      text-align: center;
+      width: 100%; max-width: 420px; background: var(--surface); border: 1px solid var(--line);
+      border-radius: 26px; box-shadow: var(--shadow); padding: 30px 26px 24px;
     }
-    .auth-logo { width: 62px; height: 62px; object-fit: contain; margin-bottom: 12px; }
-    .auth-title { margin: 0 0 5px 0; font-size: 1.25rem; color: #fff; }
-    .auth-sub { margin: 0 0 22px 0; font-size: 0.82rem; color: var(--primary); }
+    .auth-head { text-align: center; margin-bottom: 22px; display: grid; justify-items: center; gap: 4px; }
+    .auth-head .logo, .auth-head .logo-fallback { width: 60px; height: 60px; margin-bottom: 6px; }
+    .auth-head h2 { font-size: 1.2rem; font-weight: 700; }
+    .auth-head .sub { font-size: .88rem; color: var(--brand); font-weight: 600; }
+    .lead { font-size: .88rem; color: var(--ink-2); margin-bottom: 14px; }
+    .lead strong { color: var(--ink); }
+    .switch { text-align: center; font-size: .88rem; color: var(--ink-2); margin-top: 16px; }
+    .otp-input { text-align: center; letter-spacing: .5em; font-size: 1.3rem; padding-inline-start: calc(14px + .5em); }
 
-    .header-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 18px;
-      padding: 16px 22px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-      gap: 15px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    /* ---------- پیام‌ها و پنجره‌ی تأیید ---------- */
+    #toasts { position: fixed; inset-inline: 0; bottom: 16px; z-index: 5000; display: flex; flex-direction: column; align-items: center; gap: 8px; pointer-events: none; padding: 0 12px; }
+    .toast {
+      max-width: 460px; width: fit-content; padding: 12px 16px; border-radius: 14px; font-size: .9rem; line-height: 1.7;
+      background: var(--ink); color: var(--paper); box-shadow: 0 10px 30px rgba(0,0,0,.28);
+      border-inline-start: 5px solid var(--sun); animation: toast-in .25s ease-out;
     }
-    .clinic-info { display: flex; align-items: center; gap: 12px; }
-    .clinic-logo { width: 45px; height: 45px; object-fit: contain; }
-    .clinic-title { margin: 0; font-size: 1.2rem; color: #fff; }
-    .clinic-sub { margin: 0; font-size: 0.8rem; color: var(--primary); }
+    .toast-ok { border-inline-start-color: var(--ok); }
+    .toast-err { border-inline-start-color: var(--danger); }
+    @keyframes toast-in { from { opacity: 0; transform: translateY(8px); } }
+    dialog { border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--surface); color: var(--ink); padding: 24px; max-width: 360px; width: calc(100% - 32px); box-shadow: var(--shadow); }
+    dialog::backdrop { background: rgba(6, 18, 17, .55); }
+    dialog h3 { font-size: 1.05rem; margin-bottom: 6px; }
+    dialog p { color: var(--ink-2); font-size: .9rem; margin-bottom: 18px; }
+    .dialog-actions { display: flex; gap: 10px; }
+    .dialog-actions .btn { flex: 1; }
 
-    .user-profile-badge {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: rgba(15, 23, 42, 0.75);
-      padding: 6px 14px;
-      border-radius: 10px;
-      border: 1px solid var(--card-border);
-      font-size: 0.85rem;
-    }
+    .footer { text-align: center; margin-top: 28px; font-size: .75rem; color: var(--ink-2); direction: ltr; opacity: .8; }
 
-    .nav-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-    .tab-btn {
-      flex: 1;
-      padding: 12px 8px;
-      background: rgba(22, 31, 48, 0.6);
-      border: 1px solid var(--card-border);
-      color: var(--text-muted);
-      border-radius: 12px;
-      font-size: 0.9rem;
-      font-weight: bold;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: 0.2s;
-    }
-    .tab-btn.active {
-      background: var(--card-bg);
-      color: var(--primary);
-      border-color: var(--primary);
-      box-shadow: 0 4px 15px rgba(56, 189, 248, 0.15);
-    }
-
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
-
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 22px;
-      margin-bottom: 20px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.25);
-    }
-    .card-title {
-      margin-top: 0;
-      margin-bottom: 16px;
-      font-size: 1.05rem;
-      color: var(--primary);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .form-group { display: flex; flex-direction: column; margin-bottom: 14px; text-align: right; }
-    .form-group label { font-size: 0.85rem; margin-bottom: 6px; color: var(--text-muted); }
-    .form-group input, .form-group select {
-      padding: 11px 13px;
-      background: var(--input-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 9px;
-      font-size: 0.95rem;
-      color: #fff;
-      outline: none;
-      transition: 0.2s;
-    }
-    .form-group input:focus, .form-group select:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
-    }
-
-    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
-
-    .btn-submit {
-      width: 100%;
-      padding: 13px;
-      background: linear-gradient(135deg, #0284c7, #0ea5e9);
-      color: white;
-      border: none;
-      border-radius: 11px;
-      font-size: 0.95rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-    .btn-submit:hover { opacity: 0.9; }
-
-    .auth-toggle-link {
-      font-size: 0.85rem;
-      color: var(--primary);
-      cursor: pointer;
-      text-align: center;
-      display: block;
-      margin-top: 15px;
-      text-decoration: underline;
-    }
-
-    .days-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-      gap: 10px;
-      margin-bottom: 18px;
-    }
-    .day-pill {
-      background: var(--input-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 10px 6px;
-      text-align: center;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-    .day-pill:hover { border-color: var(--primary); }
-    .day-pill.selected {
-      background: rgba(56, 189, 248, 0.15);
-      border-color: var(--primary);
-      color: var(--primary);
-    }
-    .day-pill.off-duty {
-      background: rgba(239, 68, 68, 0.05);
-      border-color: rgba(239, 68, 68, 0.2);
-      cursor: not-allowed;
-      opacity: 0.6;
-    }
-
-    .slots-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-      gap: 10px;
-      margin-bottom: 18px;
-    }
-    .slot-item {
-      padding: 11px 6px;
-      border-radius: 9px;
-      text-align: center;
-      font-size: 0.85rem;
-      font-weight: 500;
-      cursor: pointer;
-      border: 1px solid var(--card-border);
-      background: var(--input-bg);
-      transition: 0.2s;
-    }
-    .slot-item.available:hover {
-      border-color: var(--primary);
-      background: rgba(56, 189, 248, 0.15);
-    }
-    .slot-item.selected {
-      background: linear-gradient(135deg, #0284c7, #0ea5e9);
-      color: #fff;
-      border-color: transparent;
-    }
-    .slot-item.occupied {
-      background: rgba(15, 23, 42, 0.4);
-      color: #475569;
-      border-color: rgba(255,255,255,0.05);
-      cursor: not-allowed;
-      text-decoration: line-through;
-    }
-
-    .appointment-card {
-      background: var(--input-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 14px;
-      padding: 16px;
-      margin-bottom: 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-    .app-meta { line-height: 1.9; font-size: 0.9rem; }
-    .status-badge {
-      display: inline-block;
-      padding: 3px 10px;
-      border-radius: 6px;
-      font-size: 0.75rem;
-      font-weight: bold;
-    }
-    .badge-upcoming { background: rgba(56, 189, 248, 0.2); color: var(--primary); border: 1px solid var(--primary); }
-    .badge-done { background: rgba(34, 197, 94, 0.2); color: var(--success); border: 1px solid var(--success); }
-
-    #loading_indicator {
-      display: none;
-      text-align: center;
-      padding: 8px;
-      color: var(--primary);
-      font-size: 0.85rem;
-    }
-
-    .app-version-badge {
-      position: fixed;
-      bottom: 10px;
-      left: 12px;
-      z-index: 3000;
-      background: rgba(15, 23, 42, 0.75);
-      border: 1px solid var(--card-border);
-      color: var(--text-muted);
-      font-size: 0.72rem;
-      font-weight: bold;
-      padding: 3px 8px;
-      border-radius: 6px;
-      backdrop-filter: blur(4px);
-      user-select: none;
-      pointer-events: none;
-      letter-spacing: 0.5px;
-      direction: ltr;
+    @media (max-width: 480px) {
+      .panel { padding: 18px 16px; border-radius: 20px; }
+      .auth-card { padding: 26px 20px 20px; }
+      .tab { font-size: .84rem; }
     }
   </style>
 </head>
 <body>
 
-<div class="app-version-badge">v2.6.0-client</div>
-
-<div id="auth_overlay">
+<!-- ============== ورود / ثبت‌نام ============== -->
+<div class="auth" id="auth" hidden>
   <div class="auth-card">
-    <img src="https://cdn.imgurl.ir/uploads/l39464_et_1s.png" class="auth-logo" alt="لوگو">
-    <h2 class="auth-title">کلینیک سپهر آرامش</h2>
-    <p class="auth-sub" id="auth_step_title">ورود به پرتال مراجعین</p>
-
-    <!-- ۱. فرم لاگین -->
-    <div id="auth_login_view">
-      <form id="form_login">
-        <div class="form-group">
-          <label>نام کاربری یا شماره همراه:</label>
-          <input type="text" id="l_username" required placeholder="مثال: 0912..." dir="ltr">
-        </div>
-        <div class="form-group">
-          <label>رمز عبور:</label>
-          <input type="password" id="l_password" required placeholder="••••••••" dir="ltr">
-        </div>
-        <button type="submit" id="btn_login_submit" class="btn-submit" style="margin-top: 6px;">ورود به حساب</button>
-      </form>
-      <span class="auth-toggle-link" onclick="switchAuthMode('step1_register')">مراجع جدید هستید؟ ثبت‌‌نام اولیه</span>
+    <div class="auth-head">
+      <img data-logo class="logo" src="https://cdn.imgurl.ir/uploads/l39464_et_1s.png" alt="">
+      <h2>کلینیک سپهر آرامش</h2>
+      <p class="sub" id="auth_subtitle">ورود به پرتال مراجعین</p>
     </div>
 
-    <!-- ۲. مرحله ۱ ثبت‌نام -->
-    <div id="auth_reg_step1_view" style="display: none;">
-      <form id="form_reg_step1">
-        <div class="form-group">
-          <label>نام و نام خانوادگی:</label>
-          <input type="text" id="r_fullname" required placeholder="مثال: علی رضایی">
+    <p class="notice" id="auth_notice" role="status" hidden></p>
+
+    <section data-view="login">
+      <form id="form_login" novalidate>
+        <div class="field">
+          <label for="l_username">نام کاربری یا شماره همراه</label>
+          <input class="input" id="l_username" type="text" autocomplete="username" autocapitalize="none" dir="ltr" placeholder="مثلاً 09121234567">
+        </div>
+        <div class="field">
+          <label for="l_password">رمز عبور</label>
+          <div class="pw">
+            <input class="input" id="l_password" type="password" autocomplete="current-password" dir="ltr">
+            <button type="button" class="pw-toggle" data-toggle-pw="l_password">نمایش</button>
+          </div>
+        </div>
+        <p class="form-error" role="alert" hidden></p>
+        <button class="btn btn-primary btn-block" type="submit" id="btn_login">ورود</button>
+      </form>
+      <p class="switch">مراجع جدید هستید؟ <button type="button" class="link-btn" data-goto="reg1">ثبت‌نام</button></p>
+    </section>
+
+    <section data-view="reg1" hidden>
+      <form id="form_reg1" novalidate>
+        <div class="field">
+          <label for="r_fullname">نام و نام خانوادگی</label>
+          <input class="input" id="r_fullname" type="text" autocomplete="name" placeholder="مثلاً علی رضایی">
         </div>
         <div class="grid-2">
-          <div class="form-group">
-            <label>سن:</label>
-            <input type="number" id="r_age" required placeholder="مثلاً: 28">
+          <div class="field">
+            <label for="r_age">سن</label>
+            <input class="input" id="r_age" type="text" inputmode="numeric" autocomplete="off" placeholder="مثلاً 28">
           </div>
-          <div class="form-group">
-            <label>شماره تماس همراه:</label>
-            <input type="tel" id="r_phone" required placeholder="۰۹۱۲..." dir="ltr">
+          <div class="field">
+            <label for="r_phone">شماره همراه</label>
+            <input class="input" id="r_phone" type="tel" autocomplete="tel" dir="ltr" placeholder="09121234567">
           </div>
         </div>
-        <button type="submit" id="btn_send_otp" class="btn-submit" style="margin-top: 6px;">ارسال پیامک کد تایید</button>
+        <p class="form-error" role="alert" hidden></p>
+        <button class="btn btn-primary btn-block" type="submit" id="btn_send_otp">دریافت کد تأیید</button>
       </form>
-      <span class="auth-toggle-link" onclick="switchAuthMode('login')">حساب کاربری دارید؟ ورود</span>
-    </div>
+      <p class="switch">حساب دارید؟ <button type="button" class="link-btn" data-goto="login">ورود</button></p>
+    </section>
 
-    <!-- ۳. مرحله ۲ تایید کد پیامکی -->
-    <div id="auth_reg_step2_otp" style="display: none;">
-      <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0;">
-        کد تایید ارسال‌شده به شماره <strong id="otp_target_phone" style="color: #fff;"></strong> را وارد فرمایید:
-      </p>
-      <form id="form_reg_otp">
-        <div class="form-group">
-          <label style="text-align: center;">کد تایید ۵ رقمی پیامک:</label>
-          <input type="text" id="r_otp_code" required placeholder="•••••" maxlength="6" dir="ltr" style="text-align: center; letter-spacing: 5px; font-size: 1.25rem;">
+    <section data-view="otp" hidden>
+      <p class="lead">کد تأییدی که به شماره <strong id="otp_phone" dir="ltr"></strong> پیامک شد را وارد کنید.</p>
+      <form id="form_otp" novalidate>
+        <div class="field">
+          <label for="r_otp">کد تأیید</label>
+          <input class="input otp-input" id="r_otp" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="8" dir="ltr" placeholder="•••••">
         </div>
-        <button type="submit" id="btn_verify_otp" class="btn-submit">تایید شماره و ادامه</button>
+        <p class="form-error" role="alert" hidden></p>
+        <button class="btn btn-primary btn-block" type="submit" id="btn_verify_otp">تأیید شماره</button>
       </form>
-      <span class="auth-toggle-link" onclick="switchAuthMode('step1_register')">ویرایش شماره تماس</span>
-    </div>
+      <p class="switch">
+        <button type="button" class="link-btn" id="btn_resend_otp">ارسال مجدد کد</button>
+        <span aria-hidden="true"> | </span>
+        <button type="button" class="link-btn" data-goto="reg1">ویرایش شماره</button>
+      </p>
+    </section>
 
-    <!-- ۴. مرحله ۳ تعیین نام کاربری و رمز عبور دائمی -->
-    <div id="auth_reg_step3_credentials" style="display: none;">
-      <p style="font-size: 0.85rem; color: var(--success); margin-top: 0;">
-        شماره تایید شد. لطفاً نام کاربری و رمز عبور اختصاصی خود را تعیین کنید:
-      </p>
-      <form id="form_reg_step3">
-        <div class="form-group">
-          <label>نام کاربری دلخواه (یا شماره همراه):</label>
-          <input type="text" id="r_username" required placeholder="انگلیسی یا شماره تماس" dir="ltr">
+    <section data-view="reg3" hidden>
+      <p class="lead">شماره‌ی شما تأیید شد. نام کاربری و رمز عبور خود را انتخاب کنید.</p>
+      <form id="form_reg3" novalidate>
+        <div class="field">
+          <label for="r_username">نام کاربری (انگلیسی یا شماره همراه)</label>
+          <input class="input" id="r_username" type="text" autocomplete="username" autocapitalize="none" dir="ltr">
         </div>
-        <div class="form-group">
-          <label>رمز عبور:</label>
-          <input type="password" id="r_password" required placeholder="حداقل ۴ کاراکتر" dir="ltr">
+        <div class="field">
+          <label for="r_password">رمز عبور (حداقل ۸ کاراکتر)</label>
+          <div class="pw">
+            <input class="input" id="r_password" type="password" autocomplete="new-password" dir="ltr">
+            <button type="button" class="pw-toggle" data-toggle-pw="r_password">نمایش</button>
+          </div>
         </div>
-        <button type="submit" id="btn_final_reg" class="btn-submit">تکمیل ثبت‌نام و ورود به پنل</button>
+        <p class="form-error" role="alert" hidden></p>
+        <button class="btn btn-primary btn-block" type="submit" id="btn_final_reg">ساخت حساب و ورود</button>
       </form>
-    </div>
+    </section>
   </div>
 </div>
 
-<div class="container" id="main_client_app" style="display: none;">
-  
-  <div class="header-card">
-    <div class="clinic-info">
-      <img src="https://cdn.imgurl.ir/uploads/l39464_et_1s.png" class="clinic-logo" alt="لوگو">
+<!-- ============== برنامه‌ی اصلی ============== -->
+<div class="shell" id="app" hidden>
+  <header class="topbar">
+    <div class="brand">
+      <img data-logo class="logo" src="https://cdn.imgurl.ir/uploads/l39464_et_1s.png" alt="">
       <div>
-        <h1 class="clinic-title">کلینیک روان‌شناسی سپهر آرامش</h1>
-        <p class="clinic-sub">پرتال مراجعین و رزرو آنلاین</p>
+        <h1>کلینیک روان‌شناسی سپهر آرامش</h1>
+        <p>پرتال مراجعین و رزرو آنلاین</p>
       </div>
     </div>
-    
-    <div class="user-profile-badge">
-      <span>کاربر: <strong id="logged_user_name" style="color: #fff;">-</strong></span>
-      <button onclick="clientLogout(false)" style="background:transparent; border:none; color:var(--danger); cursor:pointer; font-size:0.8rem; font-weight:bold;">(خروج)</button>
+    <div class="who">
+      <span>کاربر: <strong id="logged_user_name">-</strong></span>
+      <button type="button" class="link-btn danger" id="btn_logout">خروج</button>
     </div>
+  </header>
+
+  <div class="tabs" role="tablist" aria-label="بخش‌های پرتال">
+    <button class="tab" role="tab" id="tab_btn_book" aria-controls="panel_book" aria-selected="true" data-tab="book">رزرو نوبت</button>
+    <button class="tab" role="tab" id="tab_btn_apps" aria-controls="panel_apps" aria-selected="false" data-tab="apps" tabindex="-1">نوبت‌های من</button>
+    <button class="tab" role="tab" id="tab_btn_profile" aria-controls="panel_profile" aria-selected="false" data-tab="profile" tabindex="-1">پرونده من</button>
   </div>
 
-  <div class="nav-tabs">
-    <button class="tab-btn active" id="btn_nav_book" onclick="switchClientTab('book')">رزرو نوبت مشاوره</button>
-    <button class="tab-btn" id="btn_nav_my_apps" onclick="switchClientTab('my_apps')">وقت‌های من</button>
-    <button class="tab-btn" id="btn_nav_profile" onclick="switchClientTab('profile')">پرونده و مشخصات من</button>
+  <div class="load-error" id="load_error" role="alert" hidden>
+    <span>دریافت اطلاعات انجام نشد. اتصال اینترنت را بررسی کنید.</span>
+    <button type="button" class="btn btn-quiet" id="btn_retry">تلاش دوباره</button>
   </div>
 
-  <div id="loading_indicator">در حال بارگذاری اطلاعات نوبت‌ها و مشاوران...</div>
+  <!-- رزرو -->
+  <section class="panel" role="tabpanel" id="panel_book" aria-labelledby="tab_btn_book">
+    <ol class="steps" id="steps" aria-label="مراحل رزرو">
+      <li class="is-current"><span class="dot" aria-hidden="true">۱</span>مشاور</li>
+      <li><span class="dot" aria-hidden="true">۲</span>زمان</li>
+      <li><span class="dot" aria-hidden="true">۳</span>تأیید</li>
+    </ol>
 
-  <!-- تب اول: رزرو نوبت -->
-  <div id="tab_book" class="tab-content active">
-    <div class="card">
-      <h3 class="card-title">۱. انتخاب مشاور</h3>
-      <div class="form-group">
-        <label>مشاور مورد نظر خود را انتخاب فرمایید:</label>
-        <select id="counselor_select" onchange="onCounselorSelectChange()">
-          <option value="" disabled selected>در حال بارگذاری مشاوران...</option>
-        </select>
+    <div class="section">
+      <h2 class="section-title">مشاور خود را انتخاب کنید</h2>
+      <div class="field" style="margin-bottom:0">
+        <label for="counselor_select" class="sr">مشاور</label>
+        <div class="select-wrap">
+          <select class="select" id="counselor_select" disabled>
+            <option value="" disabled selected>در حال بارگذاری مشاوران…</option>
+          </select>
+        </div>
       </div>
     </div>
 
-    <div class="card" id="schedule_selection_card" style="display: none;">
-      <h3 class="card-title">۲. انتخاب زمان مراجعه</h3>
-      
-      <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 8px;">روز مراجعه:</label>
-      <div class="days-grid" id="days_container"></div>
+    <div class="section" id="schedule_section" hidden>
+      <h2 class="section-title">روز و ساعت جلسه</h2>
+      <p class="section-help">ده روز پیش‌رو نمایش داده می‌شود. روزهایی که مشاور حضور ندارد غیرفعال است.</p>
+      <div class="days" id="days" role="group" aria-label="روز مراجعه"></div>
 
-      <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 8px;">ساعت‌های خالی و قابل رزرو:</label>
-      <div class="slots-grid" id="slots_container">
-        <div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 14px;">ابتدا یک روز را انتخاب کنید.</div>
+      <h3 class="group-title" style="margin-top:20px">ساعت‌های قابل رزرو</h3>
+      <p class="section-help" id="slots_note" hidden>برای اینکه بین جلسات فاصله‌ی خالی ایجاد نشود، فقط ساعت‌های پیوسته به نوبت‌های ثبت‌شده نمایش داده می‌شود.</p>
+      <div class="slots" id="slots" role="group" aria-label="ساعت جلسه">
+        <p class="hint span-all">ابتدا یک روز را انتخاب کنید.</p>
       </div>
     </div>
 
-    <div class="card" id="confirm_booking_card" style="display: none;">
-      <h3 class="card-title">۳. تایید نهایی نوبت</h3>
-      
-      <div style="background: rgba(15, 23, 42, 0.6); padding: 14px; border-radius: 10px; border: 1px dashed var(--card-border); margin-bottom: 16px; font-size: 0.9rem; line-height: 2;">
-        <div><strong>مشاور انتخابی:</strong> <span id="summary_counselor" style="color: var(--primary);">-</span></div>
-        <div><strong>زمان جلسه:</strong> <span id="summary_datetime" style="color: #fff;">-</span></div>
-        <div><strong>مراجع:</strong> <span id="summary_client_info" style="color: var(--warning);">-</span></div>
-      </div>
-
-      <form id="client_booking_form">
-        <button type="submit" id="btn_confirm_submit" class="btn-submit">ثبت نهایی نوبت و ارسال پیامک تایید</button>
+    <div class="section" id="confirm_section" hidden>
+      <h2 class="section-title">تأیید نهایی</h2>
+      <dl class="summary">
+        <div><dt>مشاور</dt><dd id="sum_counselor">-</dd></div>
+        <div><dt>زمان جلسه</dt><dd id="sum_when">-</dd></div>
+        <div><dt>مراجع</dt><dd id="sum_client">-</dd></div>
+      </dl>
+      <form id="form_booking">
+        <button type="submit" class="btn btn-primary btn-block" id="btn_confirm">ثبت نوبت</button>
       </form>
+      <p class="fine">پس از ثبت نوبت، پیامک تأیید برای شما ارسال می‌شود.</p>
     </div>
-  </div>
+  </section>
 
-  <!-- تب دوم: وقت‌های من -->
-  <div id="tab_my_apps" class="tab-content">
-    <div class="card">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-        <h3 class="card-title" style="margin: 0;">نوبت‌های من</h3>
-        <button type="button" onclick="fetchMyAppointments()" style="background: transparent; border: 1px solid var(--card-border); color: var(--text-muted); padding: 4px 10px; border-radius: 6px; font-size: 0.78rem; cursor: pointer;">بروزرسانی</button>
-      </div>
-
-      <div style="margin-bottom: 10px; font-size: 0.92rem; font-weight: bold; color: var(--primary);">جلسات آینده (پیش‌رو):</div>
-      <div id="upcoming_apps_container">
-        <div style="text-align: center; color: var(--text-muted); padding: 15px; font-size: 0.85rem;">در حال دریافت نوبت‌ها...</div>
-      </div>
-
-      <div style="margin: 22px 0 10px 0; font-size: 0.92rem; font-weight: bold; color: var(--text-muted);">جلسات برگزارشده قبلی:</div>
-      <div id="history_apps_container"></div>
+  <!-- نوبت‌های من -->
+  <section class="panel" role="tabpanel" id="panel_apps" aria-labelledby="tab_btn_apps" hidden>
+    <div class="row-between">
+      <h2 class="section-title" style="margin:0">نوبت‌های من</h2>
+      <button type="button" class="btn btn-quiet" id="btn_refresh">بروزرسانی</button>
     </div>
-  </div>
+    <h3 class="group-title">جلسات پیش‌رو</h3>
+    <div id="upcoming_list" aria-live="polite"></div>
+    <h3 class="group-title muted">جلسات برگزارشده</h3>
+    <div id="history_list"></div>
+  </section>
 
-  <!-- تب سوم: مشخصات پرونده -->
-  <div id="tab_profile" class="tab-content">
-    <div class="card">
-      <h3 class="card-title">مشخصات پرونده کاربری</h3>
-      <div class="grid-2">
-        <div class="form-group">
-          <label>نام و نام خانوادگی:</label>
-          <input type="text" id="prof_name" readonly>
-        </div>
-        <div class="form-group">
-          <label>شماره تماس تاییدشده:</label>
-          <input type="tel" id="prof_phone" readonly dir="ltr">
-        </div>
-      </div>
-      <div class="grid-2">
-        <div class="form-group">
-          <label>نام کاربری:</label>
-          <input type="text" id="prof_username" readonly dir="ltr">
-        </div>
-        <div class="form-group">
-          <label>سن:</label>
-          <input type="number" id="prof_age" readonly>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- پرونده -->
+  <section class="panel" role="tabpanel" id="panel_profile" aria-labelledby="tab_btn_profile" hidden>
+    <h2 class="section-title" style="margin-bottom:16px">مشخصات پرونده</h2>
+    <dl class="facts">
+      <div><dt>نام و نام خانوادگی</dt><dd id="prof_name">-</dd></div>
+      <div><dt>شماره همراه تأییدشده</dt><dd id="prof_phone" dir="ltr" style="text-align:right">-</dd></div>
+      <div><dt>نام کاربری</dt><dd id="prof_username" dir="ltr" style="text-align:right">-</dd></div>
+      <div><dt>سن</dt><dd id="prof_age">-</dd></div>
+    </dl>
+  </section>
 
+  <p class="footer">v3.0.0-client</p>
 </div>
+
+<dialog id="dlg_logout" aria-labelledby="dlg_logout_title">
+  <form method="dialog">
+    <h3 id="dlg_logout_title">خروج از حساب</h3>
+    <p>برای رزرو یا مشاهده‌ی نوبت‌ها باید دوباره وارد شوید.</p>
+    <div class="dialog-actions">
+      <button class="btn btn-quiet" value="cancel">انصراف</button>
+      <button class="btn btn-danger" value="ok">خروج</button>
+    </div>
+  </form>
+</dialog>
+
+<div id="toasts" aria-live="polite" aria-atomic="false"></div>
 
 <script>
+(() => {
+'use strict';
+
+/* =========================================================
+   تنظیمات
+   ========================================================= */
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwQNRp6anbyhNDlTXGnvHnSwHUHy7RTqQhQ6oNodgZVwCQiM8Lx9MOAVCZce2_NWUNZ/exec";
+const INACTIVITY_LIMIT_MS = 3 * 60 * 60 * 1000;   // ۳ ساعت
+const ACTIVITY_WRITE_GAP_MS = 30 * 1000;
+const OTP_COOLDOWN_S = 60;
+const KEY_USER = "client_user";
+const KEY_SESSION = "client_session";
+const KEY_ACTIVITY = "client_last_activity";
+const STATUS = { booked: "رزرو شده", done: "برگزار شده", cancelled: "کنسل شده" };
 
-// ۳ ساعت بر حسب میلی‌ثانیه
-const INACTIVITY_LIMIT_MS = 3 * 60 * 60 * 1000;
-
-let state = {
-  counselors: [],
-  appointmentsList: [],
-  dutySchedules: {},
-  selectedCounselor: "",
-  selectedDate: "",
-  selectedTime: "",
-  currentUser: null
-};
-
-const TIME_SLOTS = [
-  { label: "۰۹:۰۰ - ۱۰:۰۰", start: "09:00", end: "10:00" },
-  { label: "۱۰:۰۰ - ۱۱:۰۰", start: "10:00", end: "11:00" },
-  { label: "۱۱:۰۰ - ۱۲:۰۰", start: "11:00", end: "12:00" },
-  { label: "۱۲:۰۰ - ۱۳:۰۰", start: "12:00", end: "13:00" },
-  { label: "۱۳:۰۰ - ۱۴:۰۰", start: "13:00", end: "14:00" },
-  { label: "۱۴:۰۰ - ۱۵:۰۰", start: "14:00", end: "15:00" },
-  { label: "۱۵:۰۰ - ۱۶:۰۰", start: "15:00", end: "16:00" },
-  { label: "۱۶:۰۰ - ۱۷:۰۰", start: "16:00", end: "17:00" },
-  { label: "۱۷:۰۰ - ۱۸:۰۰", start: "17:00", end: "18:00" },
-  { label: "۱۸:۰۰ - ۱۹:۰۰", start: "18:00", end: "19:00" },
-  { label: "۱۹:۰۰ - ۲۰:۰۰", start: "19:00", end: "20:00" },
-  { label: "۲۰:۰۰ - ۲۱:۰۰", start: "20:00", end: "21:00" }
-];
+/* =========================================================
+   ابزارهای کمکی
+   ========================================================= */
+const $ = id => document.getElementById(id);
+const pad2 = n => String(n).padStart(2, "0");
+const toFa = s => String(s).replace(/[0-9]/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]);
+const toEn = s => String(s ?? "")
+  .replace(/[۰-۹]/g, w => String.fromCharCode(w.charCodeAt(0) - 1728))
+  .replace(/[٠-٩]/g, w => String.fromCharCode(w.charCodeAt(0) - 1584));
+const INVISIBLE = /[\u200B-\u200F\u202A-\u202E\uFEFF]/g;
+const cleanStr = s => s ? String(s).replace(INVISIBLE, "").replace(/ي/g, "ی").replace(/ك/g, "ک").trim() : "";
+const dayKey = s => cleanStr(s).replace(/\s+/g, "");
+const hhmm = s => { const m = toEn(s).match(/(\d{1,2}):(\d{2})/); return m ? pad2(m[1]) + ":" + m[2] : ""; };
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const reduceMotion = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 function normalizePhone(p) {
   if (!p) return "";
-  let clean = String(p)
-    .replace(/[\u200B-\u200D\uFEFF\u200E\u200F]/g, "")
-    .replace(/[۰-۹]/g, w => String.fromCharCode(w.charCodeAt(0) - 1728))
-    .replace(/[٠-٩]/g, w => String.fromCharCode(w.charCodeAt(0) - 1584))
-    .replace(/\D/g, "")
-    .trim();
-  if (clean.length === 10 && clean.startsWith("9")) {
-    clean = "0" + clean;
-  }
-  return clean;
+  let c = toEn(String(p).replace(INVISIBLE, "")).replace(/\D/g, "");
+  if (c.startsWith("0098")) c = "0" + c.slice(4);
+  else if (c.startsWith("98") && c.length === 12) c = "0" + c.slice(2);
+  if (c.length === 10 && c.startsWith("9")) c = "0" + c;
+  return c;
 }
 
-function cleanStr(s) {
-  if (!s) return "";
-  return String(s).replace(/[\u200B-\u200D\uFEFF\u200E\u200F']/g, "").trim();
-}
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch { /* حالت خصوصی */ } },
+  del(k) { try { localStorage.removeItem(k); } catch { /* حالت خصوصی */ } }
+};
 
-// -------------------------------------------------------------
-// منطق خروج خودکار پس از ۳ ساعت عدم فعالیت (Inactivity Timeout)
-// -------------------------------------------------------------
-function resetInactivityTimer() {
-  if (state.currentUser) {
-    localStorage.setItem("client_last_activity", Date.now().toString());
-  }
-}
+/* زمان تهران، مستقل از منطقه‌ی زمانی دستگاه */
+const WEEKDAY_FA = { Sun: "یکشنبه", Mon: "دوشنبه", Tue: "سه‌شنبه", Wed: "چهارشنبه", Thu: "پنجشنبه", Fri: "جمعه", Sat: "شنبه" };
+const fmtWeekday = new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Tehran", weekday: "short" });
+const fmtShamsi = new Intl.DateTimeFormat("fa-IR", { timeZone: "Asia/Tehran", year: "numeric", month: "2-digit", day: "2-digit" });
+const fmtClock = new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Tehran", hour: "2-digit", minute: "2-digit", hourCycle: "h23" });
+const nowMinutes = () => { const [h, m] = fmtClock.format(new Date()).split(":").map(Number); return h * 60 + m; };
 
-function checkInactivityExpiration() {
-  const lastActivity = localStorage.getItem("client_last_activity");
-  if (lastActivity && state.currentUser) {
-    const elapsed = Date.now() - parseInt(lastActivity, 10);
-    if (elapsed > INACTIVITY_LIMIT_MS) {
-      alert("به دلیل عدم فعالیت بیش از ۳ ساعت، نشست شما منقضی شد. لطفاً دوباره وارد شوید.");
-      clientLogout(true);
-      return true;
-    }
-  }
-  return false;
-}
-
-// گوش دادن به تعاملات کاربر جهت تازه‌سازی تایمر
-['click', 'touchstart', 'keypress', 'mousemove', 'scroll'].forEach(evt => {
-  window.addEventListener(evt, () => resetInactivityTimer(), { passive: true });
+const TIME_SLOTS = Array.from({ length: 12 }, (_, i) => {
+  const h = 9 + i, start = `${pad2(h)}:00`, end = `${pad2(h + 1)}:00`;
+  return { start, end, label: toFa(`${start} - ${end}`) };
 });
 
-// بررسی دوره‌ای زمان انقضا هر ۱ دقیقه
-setInterval(() => {
-  if (state.currentUser) {
-    checkInactivityExpiration();
-  }
-}, 60000);
+/* =========================================================
+   وضعیت برنامه
+   ========================================================= */
+const state = {
+  user: null,
+  sessionToken: "",
+  counselors: [],
+  duty: {},
+  appointments: [],
+  counselor: "",
+  date: "",
+  dateIsToday: false,
+  time: ""
+};
 
-function initClientPortal() {
-  checkAuthAndRender();
+/* =========================================================
+   ارتباط امن با سرور
+   - تمام درخواست‌های پنل مراجع با توکن نشست ارسال می‌شوند.
+   - APIهای قدیمی منشی از این کلاینت استفاده نمی‌شوند.
+   ========================================================= */
+const PUBLIC_ACTIONS = new Set(["sendClientOTP", "verifyClientOTP", "finalizeClientRegister", "clientLogin"]);
+
+async function apiPost(payload) {
+  const body = { ...payload };
+  if (!PUBLIC_ACTIONS.has(body.action) && state.sessionToken) body.sessionToken = state.sessionToken;
+  const res = await fetch(SCRIPT_URL, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) throw new Error("HTTP " + res.status);
+  const result = await res.json();
+  if (result && result.code === "AUTH_REQUIRED") {
+    state.sessionToken = "";
+    store.del(KEY_SESSION);
+    state.user = null;
+    store.del(KEY_USER);
+    renderAuthOrApp();
+    throw new Error(result.message || "نشست شما پایان یافته است. دوباره وارد شوید.");
+  }
+  return result;
 }
 
-function checkAuthAndRender() {
-  const savedUser = localStorage.getItem("client_user");
-  if (savedUser) {
-    try {
-      state.currentUser = JSON.parse(savedUser);
-    } catch(e) {
-      state.currentUser = null;
-    }
+async function apiGet(action) {
+  return apiPost({ action });
+}
+
+/* =========================================================
+   رابط کاربری عمومی: پیام، خطای فرم، دکمه‌ی در حال کار
+   ========================================================= */
+function toast(msg, kind = "info", ms = 5500) {
+  const el = document.createElement("div");
+  el.className = "toast toast-" + kind;
+  el.textContent = msg;
+  $("toasts").appendChild(el);
+  setTimeout(() => el.remove(), kind === "err" ? ms + 2000 : ms);
+}
+
+function formError(form, msg) {
+  const el = form.querySelector(".form-error");
+  el.textContent = msg || "";
+  el.hidden = !msg;
+}
+
+async function withBusy(btn, busyText, fn) {
+  const original = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = busyText;
+  try { return await fn(); }
+  finally { btn.disabled = false; btn.textContent = original; }
+}
+
+document.querySelectorAll("form .input").forEach(inp =>
+  inp.addEventListener("input", () => { const f = inp.closest("form"); if (f && f.querySelector(".form-error")) formError(f, ""); })
+);
+
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-toggle-pw]");
+  if (!t) return;
+  const input = $(t.dataset.togglePw);
+  const show = input.type === "password";
+  input.type = show ? "text" : "password";
+  t.textContent = show ? "پنهان" : "نمایش";
+});
+
+document.querySelectorAll("img[data-logo]").forEach(img => {
+  const swap = () => {
+    const fb = document.createElement("span");
+    fb.className = "logo-fallback";
+    fb.textContent = "س";
+    fb.setAttribute("aria-hidden", "true");
+    img.replaceWith(fb);
+  };
+  if (img.complete && img.naturalWidth === 0) swap();
+  else img.addEventListener("error", swap, { once: true });
+});
+
+/* =========================================================
+   نشست و عدم فعالیت
+   ========================================================= */
+let lastActivityWrite = 0;
+function writeActivity(force = false) {
+  if (!state.user) return;
+  const now = Date.now();
+  if (!force && now - lastActivityWrite < ACTIVITY_WRITE_GAP_MS) return;
+  lastActivityWrite = now;
+  store.set(KEY_ACTIVITY, String(now));
+}
+["click", "touchstart", "keydown", "scroll"].forEach(evt =>
+  window.addEventListener(evt, () => writeActivity(), { passive: true })
+);
+
+function sessionExpired() {
+  const last = parseInt(store.get(KEY_ACTIVITY), 10);
+  return Boolean(state.user && last && Date.now() - last > INACTIVITY_LIMIT_MS);
+}
+function checkExpiry() {
+  if (!sessionExpired()) return false;
+  logout({ notice: "به دلیل بیش از ۳ ساعت عدم فعالیت، نشست شما پایان یافت. لطفاً دوباره وارد شوید." });
+  return true;
+}
+setInterval(checkExpiry, 60 * 1000);
+document.addEventListener("visibilitychange", () => { if (!document.hidden) checkExpiry(); });
+window.addEventListener("storage", e => {
+  if ((e.key === KEY_USER || e.key === KEY_SESSION) && !e.newValue && state.user) logout({ server: false });
+});
+
+function logout({ notice = "", server = true } = {}) {
+  const token = state.sessionToken;
+  if (server && token) {
+    fetch(SCRIPT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({ action: "clientLogout", sessionToken: token })
+    }).catch(() => {});
   }
+  store.del(KEY_USER);
+  store.del(KEY_SESSION);
+  store.del(KEY_ACTIVITY);
+  Object.assign(state, { user: null, sessionToken: "", counselors: [], duty: {}, appointments: [], counselor: "", date: "", time: "", dateIsToday: false });
+  $("form_login").reset();
+  renderAuthOrApp();
+  if (notice) { const n = $("auth_notice"); n.textContent = notice; n.hidden = false; }
+}
 
-  // بررسی عدم انقضای ۳ ساعته قبل از ورود
-  if (state.currentUser && checkInactivityExpiration()) {
-    return;
-  }
+function onAuthSuccess(user, sessionToken) {
+  state.user = user;
+  state.sessionToken = sessionToken || "";
+  if (!state.sessionToken) throw new Error("نشست امن از سرور دریافت نشد.");
+  store.set(KEY_USER, JSON.stringify(user));
+  store.set(KEY_SESSION, state.sessionToken);
+  writeActivity(true);
+  renderAuthOrApp();
+}
 
-  const overlay = document.getElementById("auth_overlay");
-  const mainApp = document.getElementById("main_client_app");
-
-  if (state.currentUser) {
-    resetInactivityTimer();
-    overlay.style.display = "none";
-    mainApp.style.display = "block";
-
-    document.getElementById("logged_user_name").innerText = state.currentUser.fullName || state.currentUser.phone;
-    document.getElementById("prof_name").value = state.currentUser.fullName || "";
-    document.getElementById("prof_phone").value = state.currentUser.phone || "";
-    document.getElementById("prof_username").value = state.currentUser.username || "-";
-    document.getElementById("prof_age").value = state.currentUser.age || "-";
-
-    fetchInitialData();
+function renderAuthOrApp() {
+  const auth = $("auth"), app = $("app");
+  if (state.user) {
+    auth.hidden = true;
+    app.hidden = false;
+    $("auth_notice").hidden = true;
+    $("logged_user_name").textContent = state.user.fullName || state.user.phone || "-";
+    $("prof_name").textContent = state.user.fullName || "-";
+    $("prof_phone").textContent = state.user.phone || "-";
+    $("prof_username").textContent = state.user.username || "-";
+    $("prof_age").textContent = state.user.age ? toFa(state.user.age) : "-";
+    resetBooking();
+    switchTab("book");
+    loadAll();
   } else {
-    overlay.style.display = "flex";
-    mainApp.style.display = "none";
-    switchAuthMode('login');
+    app.hidden = true;
+    auth.hidden = false;
+    showView("login");
   }
 }
 
-function clientLogout(forced = false) {
-  if (!forced && !confirm("آیا قصد خروج از حساب کاربری را دارید؟")) return;
-  localStorage.removeItem("client_user");
-  localStorage.removeItem("client_last_activity");
-  state.currentUser = null;
-  checkAuthAndRender();
+/* =========================================================
+   ورود و ثبت‌نام
+   ========================================================= */
+const VIEW_TITLES = {
+  login: "ورود به پرتال مراجعین",
+  reg1: "ثبت‌نام مراجع جدید",
+  otp: "تأیید شماره همراه",
+  reg3: "ساخت حساب کاربری"
+};
+const reg = {};   // اطلاعات موقت ثبت‌نام
+
+function showView(name) {
+  document.querySelectorAll("[data-view]").forEach(v => { v.hidden = v.dataset.view !== name; });
+  $("auth_subtitle").textContent = VIEW_TITLES[name];
+  document.querySelectorAll(".form-error").forEach(e => { e.hidden = true; });
+  const first = document.querySelector(`[data-view="${name}"] .input`);
+  if (first) setTimeout(() => first.focus({ preventScroll: true }), 30);
+}
+document.querySelectorAll("[data-goto]").forEach(b => b.addEventListener("click", () => showView(b.dataset.goto)));
+
+let otpTimer = null;
+function startOtpCooldown() {
+  clearInterval(otpTimer);
+  const btn = $("btn_resend_otp");
+  let left = OTP_COOLDOWN_S;
+  btn.disabled = true;
+  const tick = () => {
+    btn.textContent = left > 0 ? `ارسال مجدد کد (${toFa(left)} ثانیه)` : "ارسال مجدد کد";
+    if (left <= 0) { btn.disabled = false; clearInterval(otpTimer); }
+    left--;
+  };
+  tick();
+  otpTimer = setInterval(tick, 1000);
 }
 
-async function fetchInitialData() {
-  document.getElementById("loading_indicator").style.display = "block";
-  try {
-    const [initRes, appRes] = await Promise.all([
-      fetch(SCRIPT_URL + "?action=getInitialData").then(r => r.json()),
-      fetch(SCRIPT_URL + "?action=getAppointments").then(r => r.json())
-    ]);
+async function sendOtp() {
+  const result = await apiPost({ action: "sendClientOTP", phone: reg.phone, fullName: reg.fullName, age: reg.age });
+  if (result.status !== "success") throw new Error(result.message || "ارسال پیامک انجام نشد. دوباره تلاش کنید.");
+}
 
-    if (initRes.status === "success") {
-      state.counselors = initRes.counselors || [];
-      state.dutySchedules = initRes.dutySchedules || {};
-      renderCounselorDropdown();
+$("form_reg1").addEventListener("submit", async e => {
+  e.preventDefault();
+  const form = e.currentTarget;
+  const fullName = $("r_fullname").value.trim();
+  const age = toEn($("r_age").value).trim();
+  const phone = normalizePhone($("r_phone").value);
+
+  if (fullName.length < 3) return formError(form, "نام و نام خانوادگی را کامل وارد کنید.");
+  if (!/^\d{1,3}$/.test(age) || +age < 1 || +age > 120) return formError(form, "سن را به‌صورت عدد و بین ۱ تا ۱۲۰ وارد کنید.");
+  if (!/^09\d{9}$/.test(phone)) return formError(form, "شماره همراه باید ۱۱ رقم و با ۰۹ شروع شود.");
+
+  Object.assign(reg, { fullName, age, phone });
+  await withBusy($("btn_send_otp"), "در حال ارسال پیامک…", async () => {
+    try {
+      await sendOtp();
+      $("otp_phone").textContent = phone;
+      $("r_otp").value = "";
+      showView("otp");
+      startOtpCooldown();
+    } catch (err) {
+      formError(form, err.message === "Failed to fetch" ? "ارتباط با سرور برقرار نشد." : err.message);
     }
-    if (appRes.status === "success") {
-      state.appointmentsList = (appRes.appointments || []).map(a => {
-        a.clientPhone = normalizePhone(a.clientPhone);
-        return a;
+  });
+});
+
+$("btn_resend_otp").addEventListener("click", async () => {
+  const form = $("form_otp");
+  try { await sendOtp(); toast("کد جدید ارسال شد.", "ok"); startOtpCooldown(); }
+  catch (err) { formError(form, err.message); }
+});
+
+$("form_otp").addEventListener("submit", async e => {
+  e.preventDefault();
+  const form = e.currentTarget;
+  const code = toEn($("r_otp").value).replace(/\D/g, "");
+  if (code.length < 4) return formError(form, "کد تأیید را کامل وارد کنید.");
+
+  await withBusy($("btn_verify_otp"), "در حال بررسی…", async () => {
+    try {
+      const result = await apiPost({ action: "verifyClientOTP", phone: reg.phone, code });
+      if (result.status === "success") { clearInterval(otpTimer); showView("reg3"); }
+      else formError(form, result.message || "کد تأیید اشتباه یا منقضی شده است.");
+    } catch { formError(form, "ارتباط با سرور برقرار نشد."); }
+  });
+});
+
+$("form_reg3").addEventListener("submit", async e => {
+  e.preventDefault();
+  const form = e.currentTarget;
+  const username = toEn($("r_username").value).trim();
+  const password = $("r_password").value.trim();
+
+  if (!/^[A-Za-z0-9_.]{3,}$/.test(username)) return formError(form, "نام کاربری باید حداقل ۳ کاراکتر و فقط شامل حروف انگلیسی، عدد، نقطه یا خط زیر باشد.");
+  if (password.length < 8) return formError(form, "رمز عبور باید حداقل ۸ کاراکتر باشد.");
+
+  await withBusy($("btn_final_reg"), "در حال ساخت حساب…", async () => {
+    try {
+      const result = await apiPost({
+        action: "finalizeClientRegister",
+        phone: reg.phone, fullName: reg.fullName, age: reg.age, username, password
       });
-      fetchMyAppointments();
-    }
-  } catch (err) {
-    console.error("خطا در همگام‌‌سازی:", err);
-  } finally {
-    document.getElementById("loading_indicator").style.display = "none";
-  }
+      if (result.status === "success") {
+        Object.keys(reg).forEach(k => delete reg[k]);
+        form.reset();
+        onAuthSuccess(result.user, result.sessionToken);
+        toast("حساب شما ساخته شد. خوش آمدید.", "ok");
+      } else formError(form, result.message || "ساخت حساب انجام نشد. نام کاربری دیگری امتحان کنید.");
+    } catch { formError(form, "ارتباط با سرور برقرار نشد."); }
+  });
+});
+
+$("form_login").addEventListener("submit", async e => {
+  e.preventDefault();
+  const form = e.currentTarget;
+  const username = $("l_username").value.trim();
+  const password = $("l_password").value.trim();
+  if (!username || !password) return formError(form, "نام کاربری و رمز عبور را وارد کنید.");
+
+  await withBusy($("btn_login"), "در حال بررسی…", async () => {
+    try {
+      const result = await apiPost({ action: "clientLogin", username, password });
+      if (result.status === "success") { form.reset(); onAuthSuccess(result.user, result.sessionToken); }
+      else formError(form, result.message || "نام کاربری یا رمز عبور اشتباه است.");
+    } catch { formError(form, "ارتباط با سرور برقرار نشد."); }
+  });
+});
+
+/* =========================================================
+   تب‌ها
+   ========================================================= */
+const TABS = { book: "panel_book", apps: "panel_apps", profile: "panel_profile" };
+function switchTab(tab) {
+  Object.entries(TABS).forEach(([key, panelId]) => {
+    const on = key === tab;
+    $(panelId).hidden = !on;
+    const btn = document.querySelector(`[data-tab="${key}"]`);
+    btn.setAttribute("aria-selected", String(on));
+    btn.tabIndex = on ? 0 : -1;
+  });
+  if (tab === "apps") renderMyApps();
+}
+document.querySelectorAll("[data-tab]").forEach(b => b.addEventListener("click", () => switchTab(b.dataset.tab)));
+document.querySelector(".tabs").addEventListener("keydown", e => {
+  if (!["ArrowRight", "ArrowLeft"].includes(e.key)) return;
+  const keys = Object.keys(TABS);
+  const cur = keys.findIndex(k => document.querySelector(`[data-tab="${k}"]`).getAttribute("aria-selected") === "true");
+  // در RTL فلش راست = مورد قبلی
+  const next = (cur + (e.key === "ArrowLeft" ? 1 : -1) + keys.length) % keys.length;
+  switchTab(keys[next]);
+  document.querySelector(`[data-tab="${keys[next]}"]`).focus();
+});
+
+/* =========================================================
+   بارگذاری داده‌ها
+   ========================================================= */
+function normalizeAppointments(list) {
+  return (list || []).map(a => ({ ...a }));
 }
 
-function renderCounselorDropdown() {
-  const sel = document.getElementById("counselor_select");
-  sel.innerHTML = '<option value="" disabled selected>مشاور را انتخاب کنید...</option>';
-  state.counselors.forEach(c => {
-    const opt = document.createElement("option");
-    opt.value = c.name;
-    opt.innerText = c.name;
-    sel.appendChild(opt);
+async function loadAppointments() {
+  const res = await apiPost({ action: "getMyAppointments" });
+  if (res.status !== "success") throw new Error("getMyAppointments failed");
+  state.appointments = normalizeAppointments(res.appointments);
+}
+
+async function loadAll() {
+  $("load_error").hidden = true;
+  const sel = $("counselor_select");
+  if (!state.counselors.length) {
+    sel.disabled = true;
+    sel.innerHTML = '<option value="" disabled selected>در حال بارگذاری مشاوران…</option>';
+  }
+  $("upcoming_list").innerHTML = '<div class="skeleton" style="margin:12px 0"></div><div class="skeleton" style="width:70%"></div>';
+
+  let failed = false;
+  try {
+    const [init, apps] = await Promise.all([
+      apiPost({ action: "getClientInitialData" }),
+      apiPost({ action: "getMyAppointments" })
+    ]);
+    if (init.status === "success") {
+      state.counselors = init.counselors || [];
+      state.duty = init.dutySchedules || {};
+    } else failed = true;
+    if (apps.status === "success") state.appointments = normalizeAppointments(apps.appointments);
+    else failed = true;
+  } catch (err) {
+    console.error("خطا در همگام‌سازی:", err);
+    failed = true;
+  }
+  renderCounselors();
+  renderMyApps();
+  $("load_error").hidden = !failed;
+}
+$("btn_retry").addEventListener("click", loadAll);
+
+$("btn_refresh").addEventListener("click", () =>
+  withBusy($("btn_refresh"), "در حال بروزرسانی…", async () => {
+    try { await loadAppointments(); renderMyApps(); }
+    catch { toast("بروزرسانی انجام نشد. اتصال اینترنت را بررسی کنید.", "err"); }
+  })
+);
+
+/* =========================================================
+   رزرو: مشاور، روز، ساعت
+   ========================================================= */
+function renderCounselors() {
+  const sel = $("counselor_select");
+  const keep = state.counselor;
+  sel.innerHTML = "";
+  const ph = new Option("مشاور را انتخاب کنید…", "", true, true);
+  ph.disabled = true;
+  sel.add(ph);
+  state.counselors.forEach(c => sel.add(new Option(c.name, c.name)));
+  sel.disabled = state.counselors.length === 0;
+  if (keep && state.counselors.some(c => c.name === keep)) sel.value = keep;
+}
+
+function resetBooking() {
+  Object.assign(state, { counselor: "", date: "", time: "", dateIsToday: false });
+  $("counselor_select").value = "";
+  $("schedule_section").hidden = true;
+  $("confirm_section").hidden = true;
+  updateSteps();
+}
+
+function updateSteps() {
+  const step = !state.counselor ? 1 : !(state.date && state.time) ? 2 : 3;
+  [...$("steps").children].forEach((li, i) => {
+    const n = i + 1;
+    li.className = n < step ? "is-done" : n === step ? "is-current" : "";
+    li.firstElementChild.textContent = n < step ? "✓" : toFa(n);
+    if (n === step) li.setAttribute("aria-current", "step"); else li.removeAttribute("aria-current");
   });
 }
 
-function onCounselorSelectChange() {
-  state.selectedCounselor = document.getElementById("counselor_select").value;
-  state.selectedDate = "";
-  state.selectedTime = "";
-  document.getElementById("schedule_selection_card").style.display = "block";
-  document.getElementById("confirm_booking_card").style.display = "none";
-  renderDaysGrid();
-  document.getElementById("slots_container").innerHTML = 
-    '<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 14px;">یک روز را انتخاب نمایید.</div>';
-}
+$("counselor_select").addEventListener("change", e => {
+  state.counselor = e.target.value;
+  state.date = "";
+  state.time = "";
+  $("schedule_section").hidden = false;
+  $("confirm_section").hidden = true;
+  renderDays();
+  renderSlots();
+  updateSteps();
+});
 
 function getUpcomingDays(count = 10) {
-  const days = [];
-  const dayNames = ["یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنجشنبه", "جمعه", "شنبه"];
-  const now = new Date();
-
-  for (let i = 0; i < count; i++) {
-    const d = new Date(now);
-    d.setDate(now.getDate() + i);
-    const shamsiStr = new Intl.DateTimeFormat('fa-IR', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(d);
-    days.push({
-      dayName: dayNames[d.getDay()],
-      shamsiDate: shamsiStr
-    });
-  }
-  return days;
+  const now = Date.now();
+  return Array.from({ length: count }, (_, i) => {
+    const d = new Date(now + i * 86400000);
+    return { dayName: WEEKDAY_FA[fmtWeekday.format(d)], shamsiDate: fmtShamsi.format(d), isToday: i === 0 };
+  });
 }
 
-function renderDaysGrid() {
-  const container = document.getElementById("days_container");
-  container.innerHTML = "";
-  const upcoming = getUpcomingDays(10);
-  const sched = state.dutySchedules[state.selectedCounselor] || null;
+function renderDays() {
+  const box = $("days");
+  box.innerHTML = "";
+  const sched = state.duty[state.counselor] || null;
+  const cCounselor = cleanStr(state.counselor);
 
-  upcoming.forEach(day => {
-    const cleanDay = cleanStr(day.shamsiDate);
-    
-    const isBlocked = state.appointmentsList.some(a => 
-      cleanStr(a.counselor) === cleanStr(state.selectedCounselor) &&
-      cleanStr(a.appointmentDate) === cleanDay &&
+  getUpcomingDays().forEach(day => {
+    const cDate = toEn(cleanStr(day.shamsiDate));
+    const blocked = state.appointments.some(a =>
+      cleanStr(a.counselor) === cCounselor &&
+      toEn(cleanStr(a.appointmentDate)) === cDate &&
       a.slotType === "blocked_day"
     );
+    const inDuty = !(sched && Array.isArray(sched.days)) || sched.days.some(d => dayKey(d) === dayKey(day.dayName));
+    const off = blocked || !inDuty;
 
-    let isDayInDuty = true;
-    if (sched && sched.days) {
-      isDayInDuty = sched.days.includes(day.dayName);
-    }
-
-    const pill = document.createElement("div");
-    const isUnavailable = isBlocked || !isDayInDuty;
-    pill.className = "day-pill" + (isUnavailable ? " off-duty" : "");
-    pill.innerHTML = `
-      <div style="font-weight:bold; font-size:0.85rem;">${day.dayName}</div>
-      <div style="font-size:0.72rem; color:var(--text-muted); margin-top:3px;">${day.shamsiDate}</div>
-      ${isUnavailable ? '<div style="font-size:0.65rem; color:var(--danger); margin-top:2px;">عدم حضور</div>' : ''}
-    `;
-
-    if (!isUnavailable) {
-      pill.onclick = () => {
-        document.querySelectorAll(".day-pill").forEach(p => p.classList.remove("selected"));
-        pill.classList.add("selected");
-        state.selectedDate = day.shamsiDate;
-        state.selectedTime = "";
-        document.getElementById("confirm_booking_card").style.display = "none";
-        renderSlotsGrid();
-      };
-    }
-    container.appendChild(pill);
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "chip";
+    b.disabled = off;
+    b.setAttribute("aria-pressed", String(state.date === day.shamsiDate));
+    b.innerHTML = `<span class="d1">${esc(day.isToday ? "امروز" : day.dayName)}</span><span class="d2">${esc(day.shamsiDate)}</span>${off ? '<span class="d3">عدم حضور</span>' : ""}`;
+    b.addEventListener("click", () => {
+      box.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", "false"));
+      b.setAttribute("aria-pressed", "true");
+      state.date = day.shamsiDate;
+      state.dateIsToday = day.isToday;
+      state.time = "";
+      renderSlots();
+      updateConfirm();
+    });
+    box.appendChild(b);
   });
 }
 
-// -------------------------------------------------------------
-// الگوریتم انتخاب ساعت:
-// اگر روز خالی باشد: همه ساعات شیفت برای نفر اول باز است.
-// اگر نوبتی ثبت شده باشد: فقط اسلات‌های چسبیده (قبل و بعد) فعال می‌شوند.
-// -------------------------------------------------------------
-function renderSlotsGrid() {
-  const container = document.getElementById("slots_container");
-  container.innerHTML = "";
-  const cleanDate = cleanStr(state.selectedDate);
-  const sched = state.dutySchedules[state.selectedCounselor] || null;
+/* ---------------------------------------------------------
+   الگوریتم ساعت‌ها:
+   - روز خالی: همه‌ی ساعت‌های شیفت برای نفر اول باز است.
+   - روز دارای نوبت: فقط ساعت‌های چسبیده (قبل و بعد) باز می‌شوند.
+   - اگر همه‌ی همسایه‌ها پر باشند، بقیه‌ی ساعت‌های آزاد باز می‌شوند.
+   - ساعت‌های گذشته‌ی امروز هرگز نمایش داده نمی‌شوند.
+   --------------------------------------------------------- */
+function computeSlots(counselor, dateStr, isToday) {
+  const sched = state.duty[counselor] || null;
+  const ss = sched ? hhmm(sched.start) : "";
+  const se = sched ? hhmm(sched.end) : "";
+  const duty = TIME_SLOTS.filter(s => (!ss || s.start >= ss) && (!se || s.end <= se));
 
-  // ۱. استخراج اسلات‌های شیفت این مشاور
-  const dutySlots = TIME_SLOTS.filter(slot => {
-    if (sched) {
-      if (sched.start && slot.start < sched.start) return false;
-      if (sched.end && slot.end > sched.end) return false;
-    }
-    return true;
+  const nowMin = isToday ? nowMinutes() : -1;
+  const isPast = s => { if (!isToday) return false; const [h, m] = s.start.split(":").map(Number); return h * 60 + m <= nowMin; };
+
+  const cCounselor = cleanStr(counselor);
+  const cDate = toEn(cleanStr(dateStr));
+  const reserved = new Set();
+  duty.forEach((slot, i) => {
+    const full = toEn(slot.label);
+    const startLabel = full.split(" - ")[0];
+    const taken = state.appointments.some(a => {
+      if (cleanStr(a.counselor) !== cCounselor) return false;
+      if (toEn(cleanStr(a.appointmentDate)) !== cDate) return false;
+      if (a.status === STATUS.cancelled) return false;
+      const t = toEn(cleanStr(a.appointmentTime));
+      return t === full || t.startsWith(startLabel);
+    });
+    if (taken) reserved.add(i);
   });
 
-  if (dutySlots.length === 0) {
-    container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--danger); padding: 15px;">در این روز شیفت فعالی تعریف نشده است.</div>`;
-    return;
+  const free = i => !reserved.has(i) && !isPast(duty[i]);
+  const allowed = new Set();
+  if (reserved.size === 0) {
+    duty.forEach((_, i) => { if (free(i)) allowed.add(i); });
+  } else {
+    reserved.forEach(i => [i - 1, i + 1].forEach(j => { if (j >= 0 && j < duty.length && free(j)) allowed.add(j); }));
+    if (allowed.size === 0) duty.forEach((_, i) => { if (free(i)) allowed.add(i); });
   }
 
-  // ۲. استخراج نوبت‌های اشغال‌شده
-  const reservedIndices = [];
-  dutySlots.forEach((slot, index) => {
-    const isOccupied = state.appointmentsList.some(a => {
-      if (cleanStr(a.counselor) !== cleanStr(state.selectedCounselor)) return false;
-      if (cleanStr(a.appointmentDate) !== cleanDate) return false;
-      if (a.status === "کنسل شده") return false;
-
-      const appT = cleanStr(a.appointmentTime);
-      const slotL = cleanStr(slot.label);
-      return appT === slotL || appT.startsWith(slot.label.split(" - ")[0]);
-    });
-
-    if (isOccupied) {
-      reservedIndices.push(index);
-    }
+  const items = [];
+  duty.forEach((slot, i) => {
+    if (isPast(slot)) return;
+    if (reserved.has(i)) items.push({ slot, status: "occupied" });
+    else if (allowed.has(i)) items.push({ slot, status: "available" });
   });
+  return {
+    items,
+    dutyCount: duty.length,
+    hasReserved: reserved.size > 0,
+    available: items.filter(x => x.status === "available").length
+  };
+}
 
-  let allowedIndices = new Set();
+function renderSlots() {
+  const box = $("slots");
+  box.innerHTML = "";
+  const note = $("slots_note");
+  note.hidden = true;
 
-  // ۳. سناریوی اول: هیچ نوبتی هنوز ثبت نشده است -> نفر اول به تمامی ساعات شیفت دسترسی دارد
-  if (reservedIndices.length === 0) {
-    dutySlots.forEach((_, i) => allowedIndices.add(i));
-  } 
-  // سناریوی دوم: حداقل یک نوبت ثبت شده است -> فقط همسایه قبل و همسایه بعد مجاز می‌شوند
-  else {
-    reservedIndices.forEach(idx => {
-      if (idx - 1 >= 0 && !reservedIndices.includes(idx - 1)) {
-        allowedIndices.add(idx - 1);
-      }
-      if (idx + 1 < dutySlots.length && !reservedIndices.includes(idx + 1)) {
-        allowedIndices.add(idx + 1);
-      }
-    });
+  if (!state.date) {
+    box.innerHTML = '<p class="hint span-all">ابتدا یک روز را انتخاب کنید.</p>';
+    return;
+  }
+  const r = computeSlots(state.counselor, state.date, state.dateIsToday);
+  if (r.dutyCount === 0) {
+    box.innerHTML = '<p class="hint span-all">برای این مشاور شیفتی تعریف نشده است.</p>';
+    return;
+  }
+  if (r.available === 0) {
+    box.innerHTML = '<p class="hint span-all">در این روز ساعت خالی وجود ندارد. روز دیگری را انتخاب کنید.</p>';
+    return;
+  }
+  note.hidden = !r.hasReserved;
 
-    // در صورتی که تمام همسایه‌های متصل پر شده باشند، سایر اسلات‌های آزاد باز می‌شوند
-    if (allowedIndices.size === 0) {
-      dutySlots.forEach((_, i) => {
-        if (!reservedIndices.includes(i)) allowedIndices.add(i);
+  r.items.forEach(({ slot, status }) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "chip slot" + (status === "occupied" ? " is-full" : "");
+    b.textContent = slot.label;
+    if (status === "occupied") {
+      b.disabled = true;
+      const s = document.createElement("small");
+      s.textContent = "پر";
+      b.appendChild(s);
+    } else {
+      b.setAttribute("aria-pressed", String(state.time === slot.label));
+      b.addEventListener("click", () => {
+        box.querySelectorAll(".slot").forEach(c => c.setAttribute("aria-pressed", "false"));
+        b.setAttribute("aria-pressed", "true");
+        state.time = slot.label;
+        updateConfirm(true);
       });
     }
-  }
-
-  let hasAvailableSlot = false;
-
-  // ۴. رسم اسلات‌های مجاز
-  dutySlots.forEach((slot, index) => {
-    const isOccupied = reservedIndices.includes(index);
-    const isAllowed = allowedIndices.has(index);
-
-    // اسلات‌های اشغال‌نشده‌ای که چسبیده به زنجیره نیستند، مخفی می‌مانند تا وقت مرده ایجاد نشود
-    if (!isOccupied && !isAllowed) return;
-
-    const slotEl = document.createElement("div");
-    slotEl.className = "slot-item " + (isOccupied ? "occupied" : "available");
-    slotEl.innerText = isOccupied ? `${slot.label} (پر)` : slot.label;
-
-    if (!isOccupied) {
-      hasAvailableSlot = true;
-      slotEl.onclick = () => {
-        document.querySelectorAll(".slot-item").forEach(s => s.classList.remove("selected"));
-        slotEl.classList.add("selected");
-        state.selectedTime = slot.label;
-        showBookingConfirm();
-      };
-    }
-    container.appendChild(slotEl);
+    box.appendChild(b);
   });
+}
 
-  if (!hasAvailableSlot) {
-    container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--danger); padding: 15px;">در این روز ساعت خالی برای رزرو وجود ندارد.</div>`;
+function updateConfirm(scroll = false) {
+  const ready = Boolean(state.counselor && state.date && state.time);
+  const section = $("confirm_section");
+  section.hidden = !ready;
+  if (ready) {
+    $("sum_counselor").textContent = state.counselor;
+    $("sum_when").textContent = `${state.date}، ساعت ${state.time}`;
+    $("sum_client").textContent = `${state.user.fullName} (${state.user.phone})`;
+    if (scroll) section.scrollIntoView({ behavior: reduceMotion() ? "auto" : "smooth", block: "nearest" });
   }
+  updateSteps();
 }
 
-function showBookingConfirm() {
-  document.getElementById("summary_counselor").innerText = state.selectedCounselor;
-  document.getElementById("summary_datetime").innerText = `${state.selectedDate} ساعت ${state.selectedTime}`;
-  document.getElementById("summary_client_info").innerText = `${state.currentUser.fullName} (${state.currentUser.phone})`;
-  document.getElementById("confirm_booking_card").style.display = "block";
-  document.getElementById("confirm_booking_card").scrollIntoView({ behavior: 'smooth' });
+/* =========================================================
+   ثبت نوبت
+   ========================================================= */
+function findMyBooking({ counselor, date, time }) {
+  const t = toEn(time).split(" - ")[0];
+  return state.appointments.find(a =>
+    a.status !== STATUS.cancelled &&
+    cleanStr(a.counselor) === cleanStr(counselor) &&
+    toEn(cleanStr(a.appointmentDate)) === toEn(cleanStr(date)) &&
+    toEn(cleanStr(a.appointmentTime)).startsWith(t)
+  );
 }
 
-document.getElementById("client_booking_form").addEventListener("submit", async function(e) {
+$("form_booking").addEventListener("submit", async e => {
   e.preventDefault();
-  const btn = document.getElementById("btn_confirm_submit");
-  btn.disabled = true;
-  btn.innerText = "در حال رزرو نوبت و ارسال پیامک...";
+  const pick = { counselor: state.counselor, date: state.date, time: state.time };
 
-  const payload = {
-    action: "addAppointment",
-    counselor: state.selectedCounselor,
-    appointmentDate: state.selectedDate,
-    appointmentTime: state.selectedTime,
-    clientName: state.currentUser.fullName,
-    clientPhone: normalizePhone(state.currentUser.phone),
-    deposit: 0,
-    slotType: "full",
-    status: "رزرو شده",
-    operator: "ثبت آنلاین مراجع"
-  };
+  await withBusy($("btn_confirm"), "در حال ثبت نوبت…", async () => {
+    // ۱) آخرین وضعیت را بگیر تا رزرو همزمان نداشته باشیم
+    try { await loadAppointments(); }
+    catch { toast("ارتباط با سرور برقرار نشد. دوباره تلاش کنید.", "err"); return; }
 
-  try {
-    await fetch(SCRIPT_URL, {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
+    const still = computeSlots(pick.counselor, pick.date, state.dateIsToday)
+      .items.some(i => i.status === "available" && i.slot.label === pick.time);
+    if (!still) {
+      state.time = "";
+      renderSlots();
+      updateConfirm();
+      toast("این ساعت همین حالا رزرو شد. لطفاً ساعت دیگری انتخاب کنید.", "err");
+      return;
+    }
 
-    alert("نوبت شما با موفقیت ثبت شد و پیامک تایید برای شما ارسال گردید.");
-    document.getElementById("confirm_booking_card").style.display = "none";
-    document.getElementById("schedule_selection_card").style.display = "none";
-    document.getElementById("counselor_select").value = "";
-    setTimeout(fetchInitialData, 1200);
-  } catch (err) {
-    alert("خطا در رزرو نوبت. لطفاً مجدداً امتحان فرمایید.");
-  } finally {
-    btn.disabled = false;
-    btn.innerText = "ثبت نهایی نوبت و ارسال پیامک تایید";
-  }
-});
+    // ۲) ثبت سمت سرور؛ نام، تلفن، وضعیت، سپرده و اپراتور از سمت مرورگر پذیرفته نمی‌شوند.
+    let result;
+    try {
+      result = await apiPost({
+        action: "addAppointment",
+        counselor: pick.counselor,
+        appointmentDate: pick.date,
+        appointmentTime: pick.time
+      });
+    } catch {
+      toast("ثبت نوبت انجام نشد. اتصال اینترنت را بررسی و دوباره تلاش کنید.", "err");
+      return;
+    }
 
-function fetchMyAppointments() {
-  const upcomingBox = document.getElementById("upcoming_apps_container");
-  const historyBox = document.getElementById("history_apps_container");
+    if (result.status !== "success") {
+      // ممکن است در همین فاصله شخص دیگری نوبت را گرفته باشد.
+      try { await loadAppointments(); renderSlots(); } catch {}
+      toast(result.message || "این ساعت دیگر قابل رزرو نیست.", "err");
+      return;
+    }
 
-  if (!state.currentUser || !state.currentUser.phone) {
-    upcomingBox.innerHTML = `<div style="text-align:center; color:var(--text-muted); padding:16px;">ابتدا وارد حساب خود شوید.</div>`;
-    historyBox.innerHTML = "";
-    return;
-  }
+    // ۳) خودِ پاسخ سرور موفقیت را تأیید کرده؛ برای همگام‌سازی دوباره می‌خوانیم.
+    try { await loadAppointments(); } catch {}
+    const confirmed = Boolean(findMyBooking(pick));
 
-  const userPhone = normalizePhone(state.currentUser.phone);
-
-  const myApps = (state.appointmentsList || []).filter(a => {
-    const appPhone = normalizePhone(a.clientPhone || "");
-    return appPhone === userPhone && a.status !== "کنسل شده";
+    if (confirmed) {
+      resetBooking();
+      switchTab("apps");
+      toast("نوبت شما ثبت شد و پیامک تأیید ارسال می‌شود.", "ok");
+    } else {
+      toast("ثبت نوبت هنوز تأیید نشد. چند لحظه بعد در «نوبت‌های من» بررسی کنید و اگر نبود، با کلینیک تماس بگیرید.", "err", 9000);
+      renderMyApps();
+    }
   });
+});
 
-  if (myApps.length === 0) {
-    upcomingBox.innerHTML = `<div style="text-align:center; color:var(--text-muted); padding:16px;">هیچ نوبت فعالی برای شما ثبت نشده است.</div>`;
-    historyBox.innerHTML = "";
-    return;
-  }
+/* =========================================================
+   نوبت‌های من
+   ========================================================= */
+const sortKey = a => toEn(cleanStr(a.appointmentDate)) + " " + (hhmm(a.appointmentTime) || "");
 
-  upcomingBox.innerHTML = "";
-  historyBox.innerHTML = "";
-
-  const upcomingList = myApps.filter(a => a.status === "رزرو شده");
-  const pastList = myApps.filter(a => a.status === "برگزار شده");
-
-  if (upcomingList.length === 0) {
-    upcomingBox.innerHTML = `<div style="color:var(--text-muted); font-size:0.85rem; padding:10px;">در حال حاضر نوبت فعال و پیش‌رویی ندارید.</div>`;
-  } else {
-    upcomingList.forEach(app => {
-      const card = document.createElement("div");
-      card.className = "appointment-card";
-      card.innerHTML = `
-        <div class="app-meta">
-          <div><strong>مشاور:</strong> ${app.counselor}</div>
-          <div style="color:var(--warning); font-weight:bold;">${app.appointmentDate} (ساعت ${app.appointmentTime})</div>
-          <div style="font-size:0.8rem; color:var(--text-muted);">کد پیگیری: ${app.id || "-"}</div>
-        </div>
-        <div>
-          <span class="status-badge badge-upcoming">رزرو شده (تایید اولیه)</span>
-        </div>
-      `;
-      upcomingBox.appendChild(card);
-    });
-  }
-
-  if (pastList.length === 0) {
-    historyBox.innerHTML = `<div style="color:var(--text-muted); font-size:0.85rem; padding:10px;">سابقه جلسه برگزارشده‌ای وجود ندارد.</div>`;
-  } else {
-    pastList.forEach(app => {
-      const card = document.createElement("div");
-      card.className = "appointment-card";
-      card.innerHTML = `
-        <div class="app-meta">
-          <div><strong>مشاور:</strong> ${app.counselor}</div>
-          <div>${app.appointmentDate} (ساعت ${app.appointmentTime})</div>
-        </div>
-        <div>
-          <span class="status-badge badge-done">برگزار شده</span>
-        </div>
-      `;
-      historyBox.appendChild(card);
-    });
-  }
+function apptCard(app, past) {
+  const el = document.createElement("article");
+  el.className = "appt" + (past ? " is-past" : "");
+  el.innerHTML = `
+    <div>
+      <div class="who-line">${esc(app.counselor)}</div>
+      <div class="when">${esc(app.appointmentDate)}، ساعت ${esc(app.appointmentTime)}</div>
+      ${past ? "" : `<div class="meta">کد پیگیری: ${esc(app.id || "-")}</div>`}
+    </div>
+    <span class="badge ${past ? "badge-done" : "badge-upcoming"}">${past ? "برگزار شده" : "رزرو شده"}</span>`;
+  return el;
 }
 
-function switchClientTab(tab) {
-  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-  document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+function renderMyApps() {
+  const up = $("upcoming_list"), hist = $("history_list");
+  up.innerHTML = "";
+  hist.innerHTML = "";
+  if (!state.user) return;
 
-  if (tab === 'book') {
-    document.getElementById("btn_nav_book").classList.add("active");
-    document.getElementById("tab_book").classList.add("active");
-  } else if (tab === 'my_apps') {
-    document.getElementById("btn_nav_my_apps").classList.add("active");
-    document.getElementById("tab_my_apps").classList.add("active");
-    fetchMyAppointments();
-  } else {
-    document.getElementById("btn_nav_profile").classList.add("active");
-    document.getElementById("tab_profile").classList.add("active");
-  }
+  const mine = state.appointments.filter(a => a.status !== STATUS.cancelled);
+  const upcoming = mine.filter(a => a.status === STATUS.booked).sort((a, b) => sortKey(a).localeCompare(sortKey(b)));
+  const past = mine.filter(a => a.status === STATUS.done).sort((a, b) => sortKey(b).localeCompare(sortKey(a)));
+
+  if (upcoming.length === 0) {
+    up.innerHTML = '<div class="empty">نوبت پیش‌رویی ندارید.<br><button type="button" class="btn btn-primary" id="btn_go_book">رزرو نوبت</button></div>';
+    $("btn_go_book").addEventListener("click", () => switchTab("book"));
+  } else upcoming.forEach(a => up.appendChild(apptCard(a, false)));
+
+  if (past.length === 0) hist.innerHTML = '<div class="empty">هنوز جلسه‌ای برگزار نشده است.</div>';
+  else past.forEach(a => hist.appendChild(apptCard(a, true)));
 }
 
-let regTempData = {};
-
-function switchAuthMode(mode) {
-  document.getElementById("auth_login_view").style.display = "none";
-  document.getElementById("auth_reg_step1_view").style.display = "none";
-  document.getElementById("auth_reg_step2_otp").style.display = "none";
-  document.getElementById("auth_reg_step3_credentials").style.display = "none";
-
-  const subTitle = document.getElementById("auth_step_title");
-
-  if (mode === 'login') {
-    subTitle.innerText = "ورود به حساب کاربری مراجع";
-    document.getElementById("auth_login_view").style.display = "block";
-  } else if (mode === 'step1_register') {
-    subTitle.innerText = "ثبت‌نام مراجع جدید (مشخصات فردی)";
-    document.getElementById("auth_reg_step1_view").style.display = "block";
-  } else if (mode === 'step2_otp') {
-    subTitle.innerText = "تایید شماره موبایل (کد پیامکی)";
-    document.getElementById("auth_reg_step2_otp").style.display = "block";
-  } else if (mode === 'step3_credentials') {
-    subTitle.innerText = "تعیین نام کاربری و رمز عبور دائمی";
-    document.getElementById("auth_reg_step3_credentials").style.display = "block";
-  }
-}
-
-// مرحله ۱: ارسال واقعی پیامک کد OTP
-document.getElementById("form_reg_step1").addEventListener("submit", async function(e) {
-  e.preventDefault();
-  const btn = document.getElementById("btn_send_otp");
-  btn.disabled = true;
-  btn.innerText = "در حال ارسال پیامک...";
-
-  regTempData.fullName = document.getElementById("r_fullname").value.trim();
-  regTempData.age = document.getElementById("r_age").value.trim();
-  regTempData.phone = normalizePhone(document.getElementById("r_phone").value.trim());
-
-  if (!regTempData.phone.startsWith("09") || regTempData.phone.length !== 11) {
-    alert("لطفاً یک شماره همراه معتبر ۱۱ رقمی وارد فرمایید.");
-    btn.disabled = false;
-    btn.innerText = "ارسال پیامک کد تایید";
-    return;
-  }
-
-  try {
-    const res = await fetch(SCRIPT_URL, {
-      method: "POST",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({
-        action: "sendClientOTP",
-        phone: regTempData.phone,
-        fullName: regTempData.fullName,
-        age: regTempData.age
-      })
-    });
-    const result = await res.json();
-
-    if (result.status === "success") {
-      document.getElementById("otp_target_phone").innerText = regTempData.phone;
-      switchAuthMode('step2_otp');
-    } else {
-      alert("خطا در ارسال پیامک: " + (result.message || "لطفاً دوباره تلاش فرمایید."));
-    }
-  } catch (err) {
-    alert("خطا در ارتباط با سرور پیامک.");
-  } finally {
-    btn.disabled = false;
-    btn.innerText = "ارسال پیامک کد تایید";
-  }
+/* =========================================================
+   خروج
+   ========================================================= */
+$("btn_logout").addEventListener("click", () => {
+  const dlg = $("dlg_logout");
+  if (typeof dlg.showModal === "function") dlg.showModal();
+  else if (confirm("از حساب کاربری خارج می‌شوید؟")) logout({});
 });
+$("dlg_logout").addEventListener("close", e => { if (e.target.returnValue === "ok") logout({}); });
 
-// مرحله ۲: بررسی کد پیامکی
-document.getElementById("form_reg_otp").addEventListener("submit", async function(e) {
-  e.preventDefault();
-  const btn = document.getElementById("btn_verify_otp");
-  btn.disabled = true;
-  btn.innerText = "در حال بررسی کد...";
-
-  const code = document.getElementById("r_otp_code").value.trim();
-
-  try {
-    const res = await fetch(SCRIPT_URL, {
-      method: "POST",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({
-        action: "verifyClientOTP",
-        phone: regTempData.phone,
-        code: code
-      })
-    });
-    const result = await res.json();
-
-    if (result.status === "success") {
-      switchAuthMode('step3_credentials');
-    } else {
-      alert(result.message || "کد تایید اشتباه یا منقضی شده است.");
-    }
-  } catch (err) {
-    alert("خطا در بررسی کد تایید.");
-  } finally {
-    btn.disabled = false;
-    btn.innerText = "تایید شماره و ادامه";
+/* =========================================================
+   شروع
+   ========================================================= */
+(async function init() {
+  try { state.user = JSON.parse(store.get(KEY_USER) || "null"); } catch { state.user = null; }
+  state.sessionToken = store.get(KEY_SESSION) || "";
+  if (state.sessionToken) {
+    try {
+      const result = await apiPost({ action: "clientSession", sessionToken: state.sessionToken });
+      if (result.status === "success") {
+        state.user = result.user;
+        store.set(KEY_USER, JSON.stringify(state.user));
+        if (!checkExpiry()) renderAuthOrApp();
+        return;
+      }
+    } catch {}
+    state.user = null;
+    state.sessionToken = "";
+    store.del(KEY_USER);
+    store.del(KEY_SESSION);
+    store.del(KEY_ACTIVITY);
   }
-});
+  renderAuthOrApp();
+})();
 
-// مرحله ۳: تعیین نام کاربری و رمز
-document.getElementById("form_reg_step3").addEventListener("submit", async function(e) {
-  e.preventDefault();
-  const btn = document.getElementById("btn_final_reg");
-  btn.disabled = true;
-  btn.innerText = "در حال ساخت حساب کاربری...";
-
-  regTempData.username = document.getElementById("r_username").value.trim();
-  regTempData.password = document.getElementById("r_password").value.trim();
-
-  try {
-    const res = await fetch(SCRIPT_URL, {
-      method: "POST",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({
-        action: "finalizeClientRegister",
-        phone: regTempData.phone,
-        fullName: regTempData.fullName,
-        age: regTempData.age,
-        username: regTempData.username,
-        password: regTempData.password
-      })
-    });
-    const result = await res.json();
-
-    if (result.status === "success") {
-      state.currentUser = result.user;
-      localStorage.setItem("client_user", JSON.stringify(state.currentUser));
-      resetInactivityTimer();
-      alert("حساب کاربری شما با موفقیت ساخته شد و وارد سامانه شدید.");
-      checkAuthAndRender();
-    } else {
-      alert("خطا در ایجاد حساب کاربری.");
-    }
-  } catch (err) {
-    alert("خطا در اتصال به سرور.");
-  } finally {
-    btn.disabled = false;
-    btn.innerText = "تکمیل ثبت‌نام و ورود به پنل";
-  }
-});
-
-// فرم ورود مراجع با شیت
-document.getElementById("form_login").addEventListener("submit", async function(e) {
-  e.preventDefault();
-  const btn = document.getElementById("btn_login_submit");
-  btn.disabled = true;
-  btn.innerText = "در حال بررسی ورود...";
-
-  const u = document.getElementById("l_username").value.trim();
-  const p = document.getElementById("l_password").value.trim();
-
-  try {
-    const res = await fetch(SCRIPT_URL, {
-      method: "POST",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({
-        action: "clientLogin",
-        username: u,
-        password: p
-      })
-    });
-    const result = await res.json();
-
-    if (result.status === "success") {
-      state.currentUser = result.user;
-      localStorage.setItem("client_user", JSON.stringify(state.currentUser));
-      resetInactivityTimer();
-      checkAuthAndRender();
-    } else {
-      alert(result.message || "نام کاربری یا رمز عبور اشتباه است.");
-    }
-  } catch (err) {
-    alert("خطا در ورود به حساب.");
-  } finally {
-    btn.disabled = false;
-    btn.innerText = "ورود به حساب";
-  }
-});
-
-initClientPortal();
+})();
 </script>
 </body>
 </html>
